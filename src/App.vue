@@ -13,11 +13,13 @@
     </div>
     <Login v-if="Expands.login" />
     <Menu v-if="SteemId" />
+    <Loading />
   </div>
 </template>
 
 <script>
 import {Client} from "dsteem";
+import Loading from "@/components/Loading";
 import Login from "@/components/Login";
 import Menu from "@/components/Menu";
 import Navigation from "./components/Navigation";
@@ -26,6 +28,7 @@ var steem = require("steem");
 export default {
   name: "SteemStation",
   components: {
+    Loading,
     Login,
     Menu,
     Navigation

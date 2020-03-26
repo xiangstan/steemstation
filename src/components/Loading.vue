@@ -10,8 +10,8 @@
 <script>
 module.exports = {
   computed: {
-    loading: function() { return this.$store.state.loading; },
-    Lang: function() { return this.$store.state.lang; }
+    loading: function() { return this.$store.state.Loading; },
+    Lang: function() { return this.$store.state.Lang; }
   }
 }
 </script>

@@ -22,12 +22,10 @@ export default {
     Select(e) {
       const lang = e.currentTarget.dataset.lang;
       this.Show = false;
-      console.log(lang)
       this.$root.GetLang(lang);
     }
   },
   mounted() {
-    console.log(this.$root)
   }
 };
 </script>
