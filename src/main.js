@@ -4,11 +4,11 @@ import router from './router'
 import store from './store'
 import axios from "axios";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen, faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "./../node_modules/bulma/css/bulma.min.css";
 
-library.add(faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends)
+library.add(faBookOpen, faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends, faUserPlus)
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
@@ -69,6 +69,10 @@ new Vue({
           }
         });
       }
+    },
+    /* generic steem.api call with query parameter */
+    SteemApiQry: function(api, query, callback) {
+      this.Steem.Library.api[api](query, function(err, result) { callback(err, result); });
     }
   },
   render: h => h(App)

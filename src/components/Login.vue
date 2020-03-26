@@ -81,7 +81,6 @@ export default {
             });
         return
       }
-      console.log(this.Steem.auth.isWif(steemId))
       if (key && !this.Steem.auth.isWif(steemId)) {
         key = this.Steem.auth.getPrivateKeys(steemId, key, ["posting"]).posting
         console.log(key)

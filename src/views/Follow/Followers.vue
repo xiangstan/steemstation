@@ -22,7 +22,10 @@ module.exports={
     Steem() {
       return this.$store.state.Steem;
     },
-    SteemId: function() { return this.$store.state.SteemId; }
+    SteemId: function() { return this.$store.state.SteemId; },
+    User() {
+      return this.$store.state.User.SteemId;
+    }
   },
   methods: {
     GetFollow() {

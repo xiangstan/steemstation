@@ -26,14 +26,12 @@ export default new Vuex.Store({
     },
     Profile: {},
     Steem: {
-      chain: "steem",
-      hive: "https://api.hive.blog",
-      steem: "https://api.steemit.com",
       Library: false,
       Option: "https://api.steemit.com"
     },
     SteemId: false,
     User: {
+      Blog: false,
       Profile: {},
       SteemId: ""
     }
@@ -54,6 +52,10 @@ export default new Vuex.Store({
     // update steemjs library
     UpdSteemJs(state, data) {
       state.Steem[data.cat] = data.value;
+    },
+    // update user textContent
+    UpdUserContent(state, data) {
+      state.User[data.cat] = data.value;
     }
   },
   actions: {
