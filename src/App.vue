@@ -4,15 +4,15 @@
     <div class="container has-text-left is-pad-top-5">
       <div class="columns">
         <div class="column is-one-quarter">
-          content
+          <Profile :show="Expands.profile" ref="profile"></Profile>
         </div>
         <div class="column">
           <router-view />
         </div>
       </div>
     </div>
-    <Login v-if="Expands.login" />
-    <Menu v-if="SteemId" />
+    <Login v-if="Expands.login" ref="login" />
+    <Menu v-if="SteemId" ref="menu" />
     <Loading />
   </div>
 </template>
@@ -22,6 +22,7 @@ import {Client} from "dsteem";
 import Loading from "@/components/Loading";
 import Login from "@/components/Login";
 import Menu from "@/components/Menu";
+import Profile from "@/components/Profile";
 import Navigation from "./components/Navigation";
 var steem = require("steem");
 
@@ -31,7 +32,8 @@ export default {
     Loading,
     Login,
     Menu,
-    Navigation
+    Navigation,
+    Profile
   },
   computed: {
     Msg() {
@@ -67,13 +69,13 @@ export default {
       }, 4000);
     },
     Init() {
+      this.$store.commit("UpdSteemJs", { cat: "Library", value: steem });
       const steemId = localStorage.getItem("steemId");
       let page = localStorage.getItem("page");
 
       if (steemId) {
-        this.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
+        this.$root.SrcAccount(steemId);
       }
-      this.$store.commit("UpdSteemJs", { cat: "Library", value: steem });
       this.$root.GetLang();
     },
   },

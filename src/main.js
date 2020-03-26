@@ -25,7 +25,6 @@ new Vue({
   methods: {
     /* get Initial language pack */
     GetLang: function(lang = false) {
-      console.log(lang)
       if (!lang) {
         lang = localStorage.getItem("lang");
         if ( lang === null ) {
@@ -42,7 +41,7 @@ new Vue({
         });
     },
     // search user account
-    SrcAccount(steemId) {
+    SrcAccount(steemId, method) {
       const that = this;
       if (steemId === "") {
         this.$store.commit("UpdDataObj", {cat: "Msg", value: {
@@ -54,10 +53,14 @@ new Vue({
       else {
         that.Steem.Library.api.getAccounts([steemId], function(err, result) {
           if (err === null) {
-            localStorage.setItem("steemId", steemId);
-            that.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
-            that.profile = result[0];
-            that.$store.commit("UpdDataObj", {cat: "Profile", value: result[0]});
+            if (method === "login" || localStorage.getItem("steemId")) {
+              localStorage.setItem("steemId", steemId);
+              that.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
+              that.$store.commit("UpdDataObj", {cat: "Profile", value: result[0]});
+              that.$store.commit("UpdExpand", {cat: "login", value: false});
+            }
+            that.$store.commit("UpdUserContent", {cat: "SteemId", value: steemId});
+            that.$store.commit("UpdUserContent", {cat: "Profile", value: result[0]});
             that.$store.commit("UpdExpand", {cat: "profile", value: true});
           }
           else{

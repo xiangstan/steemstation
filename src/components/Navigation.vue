@@ -29,6 +29,9 @@
               <router-link class="navbar-item" to="/editor">
                 <font-awesome-icon icon="edit"></font-awesome-icon>
               </router-link>
+              <div class="navbar-item" v-if="ProfileImg">
+                <img class="navbar-image" :src="ProfileImg" />
+              </div>
             </template>
             <div class="buttons" v-if="!SteemId">
               <a class="button is-light" @click="Login">
@@ -54,8 +57,16 @@ export default {
     Lang() {
       return this.$store.state.Lang;
     },
-    SteemId () {
+    SteemId() {
       return this.$store.state.SteemId;
+    },
+    ProfileImg() {
+      if (typeof this.$store.state.Profile !== "undefined") {
+        const temp = JSON.parse(this.$store.state.Profile.json_metadata);
+        return temp.profile.profile_image;
+      }
+      return false;
+
     }
   },
   data () {
@@ -74,4 +85,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.navbar-image{
+  border-radius: 50%;
+  box-shadow: 0px 0px 3px #444;
+  height: 32px;
+  width: 32px;
+}
+
 </style>
