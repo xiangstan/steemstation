@@ -1,0 +1,61 @@
+{
+  "index": "en",
+  "follow": {
+    "follower": "Follower(s)",
+    "following": "Following",
+    "nothing_to": "Nothing to "
+  },
+  "profile": {
+    "savings": "Savings",
+    "search": "Search",
+    "steem": "STEEM",
+    "steem_power": "STEEM Power",
+    "steem_price": "STEEM Price",
+    "voting_power": "Voting Power"
+  },
+  "sms": {
+    "alchemy_potion": "Alchemy Potion",
+    "basic": "Basic Player Information",
+    "bronze": "Bronze",
+    "capture_rate": "Capture Rate",
+    "champion": "Champion",
+    "collection": "Collection",
+    "diamond": "Diamond",
+    "gold": "Gold",
+    "league": "League",
+    "legendary_potion": "Legendary Potion",
+    "orb": "Essence Orb",
+    "ratio": "Win/Loss Ratio",
+    "season": "Season",
+    "silver": "Silver",
+    "total": "Total"
+  },
+  "steem": {
+    "account": "Account",
+    "authorized_app": "Authorized Apps",
+    "blog": "Blog",
+    "chain": "Chain",
+    "check": "Check",
+    "hive": "hive",
+    "info_center": " Infor Center",
+    "ing": "ing",
+    "load": "Load",
+    "properties": "Properties",
+    "revoke_access": "Revoke access from ",
+    "select": "Select",
+    "space": " ",
+    "splinterlands": "Splinterlands",
+    "steem": "steem",
+    "url_cannot_empty": "URL Cannot be Empty",
+    "your": "Your "
+  },
+  "token": {
+    "balance": "Balance",
+    "claim_all": "Claim All",
+    "sell": "Sell",
+    "stake": "Stake",
+    "symbol": "Symbol",
+    "token_wallet": "Token Wallet",
+    "unclaimed_tokens": "Unclaimed Tokens"
+  }
+}
