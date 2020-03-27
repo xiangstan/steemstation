@@ -18,26 +18,26 @@
           <transition name="dropdown">
             <div class="dropdownmenu" v-bind:class="{ active: show }" v-if="show">
               <ul class="">
+                <li class="">
+                  <router-link class="dropdownmenu-link" :title="Lang.steem.account" :to="{name: 'Account', params: {id: User}}">
+                    <font-awesome-icon icon="user-circle"></font-awesome-icon>
+                    <span class="dropdownmenu-text">{{Lang.steem.account}}</span>
+                  </router-link>
+                </li>
                 <li class="dropdownmenu-item">
-                  <router-link class="dropdownmenu-link" :title="Lang.steem.blog" to ="/blog">
+                  <router-link class="dropdownmenu-link" :title="Lang.steem.blog" :to ="{name: 'BlogList', params: {id: User}}">
                     <font-awesome-icon icon="book-open"></font-awesome-icon>
                     <div class="dropdownmenu-text">{{Lang.steem.blog}}</div>
                   </router-link>
                 </li>
                 <li class="">
-                  <router-link class="dropdownmenu-link" :title="Lang.steem.account" to="/account">
-                    <font-awesome-icon icon="user-circle"></font-awesome-icon>
-                    <span class="dropdownmenu-text">{{Lang.steem.account}}</span>
-                  </router-link>
-                </li>
-                <li class="">
-                  <router-link class="dropdownmenu-link" :title="Lang.follow.follower" to ="/followers">
+                  <router-link class="dropdownmenu-link" :title="Lang.follow.follower" :to ="{name: 'Followers', params: {id: User}}">
                     <font-awesome-icon icon="user-friends"></font-awesome-icon>
                     <div class="dropdownmenu-text">{{Lang.follow.follower}}</div>
                   </router-link>
                 </li>
                 <li class="">
-                  <router-link class="dropdownmenu-link" :title="Lang.follow.following" to ="/following">
+                  <router-link class="dropdownmenu-link" :title="Lang.follow.following" :to ="{name: 'Following', params: {id: User}}">
                     <font-awesome-icon icon="user-plus"></font-awesome-icon>
                     <div class="dropdownmenu-text">{{Lang.follow.following}}</div>
                   </router-link>
@@ -59,6 +59,9 @@ export default {
   computed: {
     Lang() {
       return this.$store.state.Lang;
+    },
+    User() {
+      return this.$store.state.User.SteemId;
     }
   },
   data() {
@@ -85,14 +88,14 @@ export default {
   border: 1px solid #dadce0;
   border-radius: 12px;
   height: 25rem;
-  min-width: 300px;
+  min-width: 250px;
   margin-top: 1rem;
   overflow-y: auto;
   padding: 2rem 1rem 2rem 0rem;
   position: absolute;
   right: 0;
   top: 100%;
-  z-index: 10;
+  z-index: 5000;
 }
 .dropdownmenu-link {
   display: -webkit-box;

@@ -28,10 +28,10 @@ module.exports={
     }
   },
   methods: {
-    GetFollow() {
+    GetFollow(start = 0, limit = 1000) {
       const that = this;
       window.setTimeout(function() {
-        that.Steem.Library.api.getFollowing(that.SteemId, 0, "blog", 1000, (err, result) => {
+        that.Steem.Library.api.getFollowing(that.SteemId, start, "blog", limit, (err, result) => {
           if (err) {
             that.$store.commit("UpdFollow", [
               { "follower": '<p class="notification is-danger">Error: '+ err +'</p>' }

@@ -5,7 +5,7 @@
       </p>
       <div v-else>
         <h2 class="has-text-weight-bold is-size-3 is-capitalized">
-          {{Lang.steem.your + Lang.steem.space + Lang.follow.follower}}
+          {{Lang.follow.follower}}
         </h2>
         <p v-for="(user, idx) in Followers" :key="idx">
           <a>{{user.follower}}</a>

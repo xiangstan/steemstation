@@ -11,7 +11,7 @@ const routes = [
     component: Home
   },
   {
-    path: '/account',
+    path: '/@:id',
     name: 'Account',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -19,7 +19,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "account" */ '../views/Account.vue')
   },
   {
-    path: '/blog',
+    path: '/@:id/blog',
     name: 'BlogList',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -35,13 +35,13 @@ const routes = [
     component: () => import(/* webpackChunkName: "chain" */ '../views/Chain.vue')
   },
   {
-    path: '/following',
-    name: 'Follwing',
+    path: '/@:id/following',
+    name: 'Following',
     component: () => import(/* webpackChunkName: "following" */ '../views/Follow/Following.vue')
   },
   {
-    path: '/followers',
-    name: 'Follwers',
+    path: '/@:id/followers',
+    name: 'Followers',
     component: () => import(/* webpackChunkName: "followers" */ '../views/Follow/Followers.vue')
   },
 ]

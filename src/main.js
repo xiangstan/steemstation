@@ -4,11 +4,11 @@ import router from './router'
 import store from './store'
 import axios from "axios";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBookOpen, faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen, faCommentAlt, faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "./../node_modules/bulma/css/bulma.min.css";
 
-library.add(faBookOpen, faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends, faUserPlus)
+library.add(faBookOpen, faCommentAlt, faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends, faUserPlus)
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
@@ -23,8 +23,13 @@ new Vue({
     }
   },
   methods: {
+    // convert time to local timezone
+    CvtTime(time) {
+      const temp = new Date(time +".000Z");
+      return temp.getFullYear() + "-" + ("0" + (temp.getMonth() + 1)).slice(-2) + "-" + ("0" + temp.getDate()).slice(-2) + " " + temp.getHours() + ":" + temp.getMinutes();
+    },
     /* get Initial language pack */
-    GetLang: function(lang = false) {
+    GetLang(lang = false) {
       if (!lang) {
         lang = localStorage.getItem("lang");
         if ( lang === null ) {

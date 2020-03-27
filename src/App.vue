@@ -72,7 +72,6 @@ export default {
       this.$store.commit("UpdSteemJs", { cat: "Library", value: steem });
       const steemId = localStorage.getItem("steemId");
       let page = localStorage.getItem("page");
-
       if (steemId) {
         this.$root.SrcAccount(steemId);
       }
@@ -91,6 +90,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.is-marg-bottom-7 {
+  margin-bottom: $size7;
 }
 .is-pad-top-5 {
   padding-top: $size5;
