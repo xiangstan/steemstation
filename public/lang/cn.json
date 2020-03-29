@@ -1,9 +1,21 @@
 {
   "index": "cn",
+  "errmsg": {
+    "empty_post": "撰写文章的所有表格栏位都不能为空",
+    "no_keychain": "您没有安装Keychain。"
+  },
   "follow": {
     "follower": "粉丝",
     "following": "关注",
     "nothing_to": "尚无数据可"
+  },
+  "post": {
+    "content": "内容",
+    "decline": "拒绝收益",
+    "post": "发布",
+    "reward": "奖励",
+    "tag": "标签",
+    "title": "题目"
   },
   "profile": {
     "savings": "储蓄",

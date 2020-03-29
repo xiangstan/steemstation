@@ -1,9 +1,21 @@
 {
   "index": "en",
+  "errmsg": {
+    "empty_post": "None of the post fields can be empty",
+    "no_keychain": "You do not have Keychain installed"
+  },
   "follow": {
     "follower": "Follower(s)",
     "following": "Following",
     "nothing_to": "Nothing to "
+  },
+  "post": {
+    "content": "Content",
+    "decline": "Decline Payout",
+    "post": "Post",
+    "reward": "Reward",
+    "tag": "Tags",
+    "title": "Title"
   },
   "profile": {
     "savings": "Savings",
