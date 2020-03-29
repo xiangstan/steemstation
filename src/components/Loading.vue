@@ -35,6 +35,7 @@ module.exports = {
   padding: 20px;
   position: fixed;
   margin: auto;
+  text-align: left;
   width: 100%;
   z-index: 1001;
 }

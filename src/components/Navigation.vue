@@ -16,12 +16,6 @@
           <router-link class="navbar-item" to="/chain">
             {{Lang.steem.chain}}
           </router-link>
-          <router-link class="navbar-item" to="/steem">
-            {{Lang.steem.steem}}
-          </router-link>
-          <router-link class="navbar-item" to="/hive">
-            {{Lang.steem.hive}}
-          </router-link>
         </div>
         <div class="navbar-end">
           <div class="navbar-item">

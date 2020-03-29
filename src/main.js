@@ -3,12 +3,13 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from "axios";
+import ssc from "sscjs";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBookOpen, faCommentAlt, faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen, faCheckCircle, faCommentAlt, faEdit, faKey, faLanguage, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "./../node_modules/bulma/css/bulma.min.css";
 
-library.add(faBookOpen, faCommentAlt, faEdit, faKey, faLanguage, faSearch, faTh, faTimesCircle, faUserCircle, faUserFriends, faUserPlus)
+library.add(faBookOpen, faCheckCircle, faCommentAlt, faEdit, faKey, faLanguage, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet)
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
@@ -22,7 +23,21 @@ new Vue({
       return this.$store.state.Steem;
     }
   },
+  data() {
+    return {
+      ssc: new ssc("https://api.steem-engine.com/rpc/")
+    }
+  },
   methods: {
+    AddToast(message, status, delay = 3000) {
+      let toast = {
+        delay: delay,
+        id: new Date().getTime(),
+        message: message,
+        status: status
+      };
+      this.$store.commit("PushToast", toast);
+    },
     // convert time to local timezone
     CvtTime(time) {
       const temp = new Date(time +".000Z");
@@ -44,6 +59,22 @@ new Vue({
         .catch((error) => {
           console.error(error);
         });
+    },
+    /* Steem Engine Query */
+    SscQuery(contract, table, query, limit = 1000, offset = 0) {
+      return new Promise((resolve, reject) => {
+        this.ssc.find(
+          contract,
+          table,
+          query,
+          limit,
+          offset,
+          [],
+          (err, result) => {
+            resolve(result);
+          }
+        );
+      });
     },
     // search user account
     SrcAccount(steemId, method) {
@@ -78,9 +109,43 @@ new Vue({
         });
       }
     },
+    /* generic steem.api call without query parameter */
+    SteemApiNoQry(api, callback) {
+      this.Steem.Library.api[api]((err, result) => { callback(err, result); });
+    },
     /* generic steem.api call with query parameter */
-    SteemApiQry: function(api, query, callback) {
+    SteemApiQry(api, query, callback) {
       this.Steem.Library.api[api](query, function(err, result) { callback(err, result); });
+    },
+    // get steem chain global properties
+    SteemGlobalProperties() {
+      const that = this;
+      that.SteemApiNoQry("getDynamicGlobalProperties", (err, result) => {
+        if (err === null) {
+          that.$store.commit("UpdChainProp", {chain: "Steem", obj: "GlobalProps", value: result});
+        }
+      });
+      //that.Steem.Library.api.getDynamicGlobalProperties((err, result) => {
+    },
+    /* current median history price */
+    SteemCurMedHisPrice() {
+      const that = this;
+      that.SteemApiNoQry("getCurrentMedianHistoryPrice", (err, result) => {
+        if (err) { console.error(err); }
+        else {
+          that.$store.commit("UpdChainProp", {chain: "Steem", obj: "CurMHisPrice", value: result});
+        }
+      });
+    },
+    /* get reward fund */
+    SteemGetRewardFund() {
+      const that = this;
+      that.SteemApiQry("getRewardFund", "post", (err, result) => {
+        if (err) { console.error(err); }
+        else {
+          that.$store.commit("UpdChainProp", {chain: "Steem", obj: "RewardFund", value: result});
+        }
+      });
     }
   },
   render: h => h(App)

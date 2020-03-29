@@ -45,8 +45,9 @@
     "select": "Select",
     "space": " ",
     "splinterlands": "Splinterlands",
-    "steem": "steem",
+    "steem": "STEEM",
     "url_cannot_empty": "URL Cannot be Empty",
+    "wallet": "Wallet",
     "your": "Your "
   },
   "token": {

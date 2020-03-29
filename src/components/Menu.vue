@@ -44,6 +44,12 @@
                 </li>
                 <!-- Dropdown Menu Separator -->
                 <hr>
+                <li class="">
+                  <router-link class="dropdownmenu-link" :title="Lang.steem.wallet" :to ="{name: 'Wallet', params: {id: User}}">
+                    <font-awesome-icon icon="wallet"></font-awesome-icon>
+                    <div class="dropdownmenu-text">{{Lang.steem.wallet}}</div>
+                  </router-link>
+                </li>
               </ul>
             </div>
           </transition>
@@ -95,7 +101,7 @@ export default {
   position: absolute;
   right: 0;
   top: 100%;
-  z-index: 5000;
+  z-index: 50;
 }
 .dropdownmenu-link {
   display: -webkit-box;

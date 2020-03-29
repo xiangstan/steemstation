@@ -45,8 +45,9 @@
     "select": "选择",
     "space": "",
     "splinterlands": "Splinterlands",
-    "steem": "steem",
+    "steem": "STEEM",
     "url_cannot_empty": "URL不能为空",
+    "wallet": "钱包",
     "your": "你的"
   },
   "token": {
