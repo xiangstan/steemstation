@@ -2,17 +2,16 @@
   <div class="toast-item is-relative">
     <transition name="toast">
       <div class="toast-message card">
-        <div class="card-content has-text-light" :class="background">
+        <div class="card-content" :class="background">
           <div class="media">
             <div class="media-left">
-              <font-awesome-icon :icon="icon"></font-awesome-icon>
+              <font-awesome-icon :class="color" :icon="icon"></font-awesome-icon>
             </div>
-            <div class="media-content">
-              {{item.message}}
+            <div class="media-content" :class="color" v-html="item.message">
             </div>
           </div>
         </div>
-        <a class="toast-close" @click="Remove">
+        <a class="toast-close" :class="color" @click="Remove">
           <font-awesome-icon icon="times"></font-awesome-icon>
         </a>
       </div>
@@ -26,17 +25,27 @@ export default {
   computed: {
     background() {
       const color = {
-        true: "success",
-        false: "danger"
+        good: "success",
+        bad: "danger",
+        warn: "warning"
       };
       return "has-background-" + color[this.item.status]
     },
+    color() {
+      const icon = {
+        good: "has-text-light",
+        bad: "has-text-light",
+        warn: "has-text-dark"
+      };
+      return icon[this.item.status] || "check-circle";
+    },
     icon() {
       const icon = {
-        true: "check",
-        false: "times"
+        good: "check-circle",
+        bad: "times-circle",
+        warn: "exclamation-triangle"
       };
-      return icon[this.item.status] + "-circle" || "check-circle";
+      return icon[this.item.status] || "check-circle";
     }
   },
   methods: {
@@ -84,7 +93,6 @@ $width: 400px;
   top: 5px;
 }
 .toast-item {
-  color: white;
   font-weight: bold;
   font-size: 1.0rem;
   text-align: center;

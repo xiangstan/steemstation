@@ -24,17 +24,20 @@
     <!-- Tokens -->
     <Tokens></Tokens>
     <!-- Unclaimed -->
-    <button class="button" @click="Test">Test</button>
+    <Unclaimed></Unclaimed>
+    <!-- <button class="button" @click="Test">Test</button> -->
     <!-- End -->
   </div>
 </template>
 
 <script>
-import Tokens from "@/components/Tokens";
+import Tokens from "@/components/Wallet/Tokens";
+import Unclaimed from "@/components/Wallet/Unclaimed";
 
 export default {
   components: {
-    Tokens
+    Tokens,
+    Unclaimed
   },
   computed: {
     /* dynamic global properties */
@@ -83,7 +86,7 @@ export default {
       return parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     Test() {
-      this.$root.AddToast(this.guidGenerator(), true);
+      this.$root.AddToast(this.guidGenerator(), "good");
     }
   },
   props:{

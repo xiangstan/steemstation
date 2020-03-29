@@ -159,11 +159,7 @@ module.exports={
       const activekey = document.getElementById("active-key").value;
       const temp = that.form.slice(0);
       if(activekey.length === 0) {
-        that.$root.$refs.app.alert({
-          alert: true,
-          code: false,
-          text: "Need to provide STEEM Active Key"
-        });
+        this.$root.AddToast("Need to provide STEEM Active Key", "bad");
       }
       else if(temp.length === 0){
         that.$root.$refs.app.alert({
@@ -244,11 +240,5 @@ module.exports={
   font-style: italic;
   font-weight: bold;
   margin:0 3px;
-}
-.background-token {
-  background-color: #4a4a4a;
-}
-.background-token.token-title {
-  padding: 0.75em 1em;
 }
 </style>
