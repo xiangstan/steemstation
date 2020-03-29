@@ -47,7 +47,12 @@ const routes = [
   {
     path: '/@:id/wallet',
     name: 'Wallet',
-    component: () => import(/* webpackChunkName: "followers" */ '../views/User/Wallet.vue')
+    component: () => import(/* webpackChunkName: "wallet" */ '../views/User/Wallet.vue')
+  },
+  {
+    path: '/editor',
+    name: 'Editor',
+    component: () => import(/* webpackChunkName: "editor" */ '../views/User/Editor.vue')
   },
 ]
 

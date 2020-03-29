@@ -99,6 +99,12 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+.background-token {
+  background-color: #4a4a4a;
+}
+.background-token.token-title {
+  padding: 0.75em 1em;
+}
 .button-expand {
   color:#fff!important;
   text-decoration: none!important;

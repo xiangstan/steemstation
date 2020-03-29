@@ -27,7 +27,7 @@
           <div class="is-6">
             <div class="social-media">
               <span class="icon-website" v-if="metadata.website">
-                <i class="fab fa-chrome fa-fw"></i>
+                <font-awesome-icon class="icon-space" :icon="['fab', 'chrome']"></font-awesome-icon>
                 <a class="social-link" :href="metadata.website" target="_blank">{{metadata.website}}</a>
               </span>
               <span class="icon-linkedin" v-if="metadata.linkedin">
@@ -201,16 +201,19 @@ export default {
   height: 100%;
   width: 100%;
 }
+.icon-space {
+  margin-right: 3px;
+}
 .icon-facebook{
   color:#3b5998;
 }
-.icon-github{
+.icon-github {
   color:#333;
 }
-.icon-linkedin{
+.icon-linkedin {
   color:#0077b5;
 }
-.icon-website{
+.icon-website {
   color:#ea4335;
 }
 .likr {
