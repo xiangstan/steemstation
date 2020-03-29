@@ -13,6 +13,7 @@
     </div>
     <Login v-if="Expands.login" ref="login" />
     <Menu v-if="SteemId" ref="menu" />
+    <Toast />
     <Loading />
   </div>
 </template>
@@ -24,6 +25,7 @@ import Login from "@/components/Login";
 import Menu from "@/components/Menu";
 import Profile from "@/components/Profile";
 import Navigation from "./components/Navigation";
+import Toast from "@/components/Toast/Main";
 var steem = require("steem");
 
 export default {
@@ -33,7 +35,8 @@ export default {
     Login,
     Menu,
     Navigation,
-    Profile
+    Profile,
+    Toast
   },
   computed: {
     Msg() {
@@ -72,6 +75,11 @@ export default {
       this.$store.commit("UpdSteemJs", { cat: "Library", value: steem });
       const steemId = localStorage.getItem("steemId");
       let page = localStorage.getItem("page");
+      this.$root.SteemGlobalProperties("Steem");
+      window.setTimeout(() => {
+        this.$root.SteemCurMedHisPrice();
+        this.$root.SteemGetRewardFund();
+      }, 100);
       if (steemId) {
         this.$root.SrcAccount(steemId);
       }
@@ -90,6 +98,16 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.button-expand {
+  color:#fff!important;
+  text-decoration: none!important;
+}
+.button-expand span {
+  color: #fff;
+  display: inline-block;
+  text-align: center;
+  width: 10px;
 }
 .is-marg-bottom-7 {
   margin-bottom: $size7;

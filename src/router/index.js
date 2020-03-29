@@ -44,6 +44,11 @@ const routes = [
     name: 'Followers',
     component: () => import(/* webpackChunkName: "followers" */ '../views/Follow/Followers.vue')
   },
+  {
+    path: '/@:id/wallet',
+    name: 'Wallet',
+    component: () => import(/* webpackChunkName: "followers" */ '../views/User/Wallet.vue')
+  },
 ]
 
 const router = new VueRouter({

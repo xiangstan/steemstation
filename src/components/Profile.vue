@@ -1,93 +1,81 @@
 <template>
   <div v-if="Lang && CheckProfile">
-      <!-- User Info -->
-      <div class="card">
-        <div class="card-content">
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-96x96">
-                <img class="profile-image" :src="metadata.profile_image" :alt="Profile.name" />
-              </figure>
-            </div>
-            <div class="media-content">
-              <p class="title is-4">
-                {{metadata.name}}
-                <span class="likr" v-if="likr">
-                  <img src="/images/clap.png" />
-                </span>
-              </p>
-              <p class="subtitle is-6 is-italic">@{{Profile.name}}</p>
-              <p class="" v-if="metadata.location">
-                <i class="fas fa-map-marker-alt fa-fw"></i> {{metadata.location}}
-              </p>
-            </div>
+    <!-- User Info -->
+    <div class="card">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-96x96">
+              <img class="profile-image" :src="metadata.profile_image" :alt="Profile.name" />
+            </figure>
           </div>
-          <div class="content">
-            <p>{{metadata.about}}</p>
-            <div class="is-6">
-              <div class="social-media">
-                <span class="icon-website" v-if="metadata.website">
-                  <i class="fab fa-chrome fa-fw"></i>
-                  <a class="social-link" :href="metadata.website" target="_blank">{{metadata.website}}</a>
-                </span>
-                <span class="icon-linkedin" v-if="metadata.linkedin">
-                  <i class="fab fa-linkedin fa-fw"></i>
-                  <a class="social-link" :href="'https://www.linkedin.com/in/'+metadata.linkedin" target="_blank">{{metadata.linkedin}}</a>
-                </span>
-                <span class="icon-facebook" v-if="metadata.facebook">
-                  <i class="fas fa-map-marker-alt"></i> {{metadata.facebook}}
-                </span>
-                <span class="" v-if="metadata.youtube">
-                  <i class="fab fa-youtube fa-fw"></i> {{metadata.youtube}}
-                </span>
-                <span class="" v-if="metadata.instagram">
-                  <i class="fab fa-instagram fa-fw"></i> {{metadata.instagram}}
-                </span>
-                <span class="icon-github" v-if="metadata.github">
-                  <i class="fab fa-github fa-fw"></i>
-                  <a class="social-link" :href="'https://github.com/'+metadata.github" target="_blank">{{metadata.github}}</a>
-                </span>
-              </div>
-            </div>
-          </div>
-      </div>
-      <!-- STEEM Info -->
-      <div class="card" v-if="page==='hive' || page==='steem'">
-        <div class="card-content">
-          <div class="content">
-            <p><strong>{{Lang.steem[page].toUpperCase()}}:</strong> {{Profile.balance}}</p>
-            <!-- <p><strong>Steem Power:</strong> {{profile.balance}}</p> -->
-            <p><strong>{{Lang.steem[page].toUpperCase()}} Dollars:</strong> {{Profile.sbd_balance}}</p>
-            <p><strong>{{Lang.profile.savings}}:</strong> {{Profile.savings_balance}}</p>
-            <div class="line-break"></div>
-            <p v-if="ChainGlobalProps">
-              <strong>{{Lang.profile.steem_power}}:</strong>
-              <template v-if="ChainGlobalProps && ChainPower">
-                {{CommaSeparated(CalcChainPower.toFixed(2))}}
-                (<em>{{CommaSeparated(ChainPower.own)}} {{delegatedpower}}</em>)
-              </template>
-              <template v-else>
-                <i aria-hidden="true" class="fas fa-spinner fa-spin"></i> Loading...
-              </template>
+          <div class="media-content">
+            <p class="title is-4">
+              {{metadata.name}}
+              <span class="likr" v-if="likr">
+                <img src="/images/clap.png" />
+              </span>
             </p>
-            <p>
-              <strong>{{Lang.profile.voting_power}}:</strong> {{ChainVotePower}}%
-            </p>
-            <!-- <p>
-              <strong>Upvote:</strong> ${{upvote}}
-            </p> -->
-            <div class="line-break"></div>
-            <p v-if="ChainMedianPrice">
-              <strong>{{Lang.profile.steem_price}}:</strong> ${{ChainMedianPrice}}
-            </p>
-            <p v-if="ChainRecentClaim">
-              <strong>Recent Claims:</strong> {{CommaSeparated(ChainRecentClaim / 1e9)}} B
+            <p class="subtitle is-6 is-italic">@{{Profile.name}}</p>
+            <p class="" v-if="metadata.location">
+              <i class="fas fa-map-marker-alt fa-fw"></i> {{metadata.location}}
             </p>
           </div>
         </div>
+        <div class="content">
+          <p>{{metadata.about}}</p>
+          <div class="is-6">
+            <div class="social-media">
+              <span class="icon-website" v-if="metadata.website">
+                <i class="fab fa-chrome fa-fw"></i>
+                <a class="social-link" :href="metadata.website" target="_blank">{{metadata.website}}</a>
+              </span>
+              <span class="icon-linkedin" v-if="metadata.linkedin">
+                <i class="fab fa-linkedin fa-fw"></i>
+                <a class="social-link" :href="'https://www.linkedin.com/in/'+metadata.linkedin" target="_blank">{{metadata.linkedin}}</a>
+              </span>
+              <span class="icon-facebook" v-if="metadata.facebook">
+                <i class="fas fa-map-marker-alt"></i> {{metadata.facebook}}
+              </span>
+              <span class="" v-if="metadata.youtube">
+                <i class="fab fa-youtube fa-fw"></i> {{metadata.youtube}}
+              </span>
+              <span class="" v-if="metadata.instagram">
+                <i class="fab fa-instagram fa-fw"></i> {{metadata.instagram}}
+              </span>
+              <span class="icon-github" v-if="metadata.github">
+                <i class="fab fa-github fa-fw"></i>
+                <a class="social-link" :href="'https://github.com/'+metadata.github" target="_blank">{{metadata.github}}</a>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- End -->
     </div>
+    <!-- STEEM Info -->
+    <div class="card">
+      <div class="card-content">
+        <div class="content">
+          <p v-if="ChainGlobalProps">
+            <strong>{{Lang.profile.steem_power}}:</strong>
+            <template v-if="ChainGlobalProps && ChainPower">
+              {{CommaSeparated(CalcChainPower.toFixed(2))}}
+              (<em>{{CommaSeparated(ChainPower.own)}} {{delegatedpower}}</em>)
+            </template>
+            <template v-else>
+              <i aria-hidden="true" class="fas fa-spinner fa-spin"></i> Loading...
+            </template>
+          </p>
+          <p>
+            <strong>{{Lang.profile.voting_power}}:</strong> {{ChainVotePower}}%
+          </p>
+          <!-- <p>
+            <strong>Upvote:</strong> ${{upvote}}
+          </p> -->
+        </div>
+      </div>
+    </div>
+    <!-- End -->
   </div>
   <p class="notification is-danger" v-else>Provided account does not exist</p>
 </template>
@@ -102,33 +90,25 @@ export default {
     ChainGlobalProps() {
       return this.$store.state.Chain[this.page].GlobalProps;
     },
-    /* dynmanic median price */
-    ChainMedianPrice() {
-      let temp = this.$store.state.Chain[this.page].curMHisPrice;
-      if (temp) {
-        return parseFloat(temp.base.split(" ")[0]) / parseFloat(temp.quote.split(" ")[0]);
-      }
-      else { return false; }
-    },
     /* steem user self steem power */
-    ChainPower: function() {
+    ChainPower() {
       /* https://steemit.com/utopian-io/@stoodkev/steemjs-for-dummies-2-calculate-the-user-s-steem-power */
-      if(this.ChainGlobalProps){
+      if (this.ChainGlobalProps) {
         return {
-          own: parseFloat(this.steem.formatter.vestToSteem(this.Profile.vesting_shares, this.ChainGlobalProps.total_vesting_shares, this.ChainGlobalProps.total_vesting_fund_steem).toFixed(2)),
-          delegated: parseFloat(this.steem.formatter.vestToSteem(
+          own: parseFloat(this.Steem.Library.formatter.vestToSteem(this.Profile.vesting_shares, this.ChainGlobalProps.total_vesting_shares, this.ChainGlobalProps.total_vesting_fund_steem).toFixed(2)),
+          delegated: parseFloat(this.Steem.Library.formatter.vestToSteem(
             this.Profile.delegated_vesting_shares,
             this.ChainGlobalProps.total_vesting_shares,
             this.ChainGlobalProps.total_vesting_fund_steem
           ).toFixed(2)),
-          received: parseFloat(this.steem.formatter.vestToSteem(
+          received: parseFloat(this.Steem.Library.formatter.vestToSteem(
             this.Profile.received_vesting_shares,
             this.ChainGlobalProps.total_vesting_shares,
             this.ChainGlobalProps.total_vesting_fund_steem
           ).toFixed(2))
         };
       }
-      else{ return false; }
+      else { return false; }
     },
     /* user voting power */
     ChainVotePower() {
@@ -136,13 +116,8 @@ export default {
       const sec = (new Date - new Date(this.Profile.last_vote_time + "Z")) / 1000;
       return Math.min((this.Profile.voting_power + (10000 * sec / 432000)) / 100, 100).toFixed(2);
     },
-    /* recent claim */
-    ChainRecentClaim: function() {
-      if (this.ChainRewardFund) { return this.ChainRewardFund.recent_claims; }
-      else { return false; }
-    },
     /* steem reward fund */
-    ChainRewardFund: function() {
+    ChainRewardFund() {
       return this.$store.state.Chain[this.page].RewardFund;
     },
     // check if profile object is empty
@@ -150,10 +125,10 @@ export default {
       return (Object.keys(this.Profile).length > 0 && this.Profile.constructor === Object) ? true : false;
     },
     /* steem user delegated power */
-    delegatedpower: function() {
+    delegatedpower() {
       return this.CalcDelegated(this.ChainPower, false);
     },
-    likr: function() {
+    likr() {
       const location = this.metadata.location;
       if(typeof location !=="undefined" && location !== "") {
         const loc = this.metadata.location.split(":");
@@ -162,8 +137,10 @@ export default {
       }
       else { return false; }
     },
-    Lang: function() { return this.$store.state.Lang; },
-    metadata: function() {
+    Lang() {
+      return this.$store.state.Lang;
+    },
+    metadata() {
       if (this.Profile) {
         const temp = JSON.parse(this.Profile.json_metadata)
         return temp.profile;
@@ -181,6 +158,10 @@ export default {
         steem: true
       }
       return flag[this.page] || false;
+    },
+    // SteemJs library
+    Steem() {
+      return this.$store.state.Steem;
     }
   },
   methods: {

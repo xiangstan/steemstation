@@ -5,6 +5,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    Chain: {
+      Steem: {
+        CurMHisPrice: false,
+        GlobalProps: false,
+        RewardFund: false
+      }
+    },
     Expands: {
       blog: false,
       login: false,
@@ -30,13 +37,28 @@ export default new Vuex.Store({
       Option: "https://api.steemit.com"
     },
     SteemId: false,
+    Toast: [
+    ],
     User: {
       Blogs: false,
       Profile: {},
-      SteemId: ""
+      SteemId: "",
+      Tokens: []
     }
   },
   mutations: {
+    // remove existing item from toasts
+    PopToast(state, idx) {
+      state.Toast = state.Toast.filter(t => t.id !== idx);
+    },
+    // push new item in toast
+    PushToast(state, data) {
+      state.Toast.push(data);
+    },
+    // update chain global properties
+    UpdChainProp(state, data) {
+      state.Chain[data.chain][data.obj] = data.value;
+    },
     // generic update function
     UpdDataObj(state, data) {
       state[data.cat] = data.value;
