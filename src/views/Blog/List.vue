@@ -83,6 +83,9 @@ export default {
   mounted() {
     const steemId = this.$route.params.id;
     if (typeof steemId !== "undefined") {
+      if (steemId !== this.User.SteemId) {
+        this.$root.SrcAccount(steemId);
+      }
       this.fetchBlog(steemId);
     }
   }

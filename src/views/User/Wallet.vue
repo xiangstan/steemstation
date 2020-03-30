@@ -74,6 +74,9 @@ export default {
       return this.$store.state.Steem;
     },
     TokenExpands: function() { return this.$store.state.Expands; },
+    User() {
+      return this.$store.state.User.SteemId;
+    }
   },
   methods: {
     guidGenerator() {
@@ -87,6 +90,16 @@ export default {
     },
     Test() {
       this.$root.AddToast(this.guidGenerator(), "good");
+    }
+  },
+  mounted() {
+    const steemId = this.$route.params.id;
+    if (typeof steemId !== "undefined") {
+      if (steemId !== this.User.SteemId) {
+        this.$root.SrcAccount(steemId);
+        this.$store.commit("UpdExpand", {cat: "token", value: false});
+        this.$store.commit("UpdExpand", {cat: "unclaimed", value: false});
+      }
     }
   },
   props:{

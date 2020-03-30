@@ -1,11 +1,13 @@
 <template>
   <div class="modal modal-large is-active">
     <div class="modal-background"></div>
-    <div class="modal-card">
+    <div class="modal-card has-text-left">
       <header class="modal-card-head">
-        <p class="modal-card-title has-text-left has-text-weight-bold is-capitalized">
-          LOG IN
-          <font-awesome-icon class="is-pulled-right" icon="times-circle"></font-awesome-icon>
+        <p class="modal-card-title has-text-weight-bold is-uppercase">
+          {{Lang.steem.login}}
+          <a class="has-text-dark has-text-weight-normal">
+            <font-awesome-icon class="is-pulled-right" icon="times-circle" @click="Close"></font-awesome-icon>
+          </a>
         </p>
       </header>
       <section class="login-form">
@@ -38,7 +40,10 @@
 export default {
   name: "Login",
   computed: {
-    HasKeychain() { return (window.steem_keychain) ? true : false; }
+    HasKeychain() { return (window.steem_keychain) ? true : false; },
+    Lang() {
+      return this.$store.state.Lang;
+    }
   },
   data() {
     return {
@@ -47,6 +52,10 @@ export default {
     };
   },
   methods: {
+    // close log in window
+    Close() {
+      this.$store.commit("UpdExpand", {cat: "login", value: false});
+    },
     // log into the app
     Login(e) {
       e.preventDefault();

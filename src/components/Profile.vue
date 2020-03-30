@@ -18,13 +18,14 @@
             </p>
             <p class="subtitle is-6 is-italic">@{{Profile.name}}</p>
             <p class="" v-if="metadata.location">
-              <i class="fas fa-map-marker-alt fa-fw"></i> {{metadata.location}}
+              <font-awesome-icon class="icon-space" icon="map-marker-alt"></font-awesome-icon>
+              {{metadata.location}}
             </p>
           </div>
         </div>
         <div class="content">
           <p>{{metadata.about}}</p>
-          <div class="is-6">
+          <div class="is-6 field">
             <div class="social-media">
               <span class="icon-website" v-if="metadata.website">
                 <font-awesome-icon class="icon-space" :icon="['fab', 'chrome']"></font-awesome-icon>
@@ -49,6 +50,11 @@
               </span>
             </div>
           </div>
+          <p>
+            <font-awesome-icon class="icon-space" icon="clock"></font-awesome-icon>
+            {{Lang.steem.joined}}:
+            {{AccountCreated}}
+          </p>
         </div>
       </div>
     </div>
@@ -67,7 +73,10 @@
             </template>
           </p>
           <p>
-            <strong>{{Lang.profile.voting_power}}:</strong> {{ChainVotePower}}%
+            <strong>{{Lang.profile.voting + Lang.steem.space +Lang.profile.power}}:</strong> {{ChainVotePower}}%
+          </p>
+          <p>
+            <strong>{{Lang.profile.downvote + Lang.steem.space +Lang.profile.power}}:</strong> {{ChainDownPower}}%
           </p>
           <!-- <p>
             <strong>Upvote:</strong> ${{upvote}}
@@ -83,6 +92,10 @@
 <script>
 export default {
   computed: {
+    // convert Profile.created to local time
+    AccountCreated() {
+      return this.$root.CvtTime(this.Profile.created) || "";
+    },
     CalcChainPower() {
       return parseFloat(this.ChainPower.own) + this.CalcDelegated(this.ChainPower, true);
     },
@@ -109,6 +122,12 @@ export default {
         };
       }
       else { return false; }
+    },
+    // user down vote power
+    ChainDownPower() {
+      const sec = (new Date - new Date(this.Profile.downvote_manabar.last_update_time * 1000)) / 1000;
+      const mana = this.Profile.downvote_manabar.current_mana / (this.Profile.voting_manabar.current_mana / (this.Profile.voting_power / 100) / 4);
+      return Math.min((mana * 100 + (10000 * sec / 432000)) / 100, 100).toFixed(2);
     },
     /* user voting power */
     ChainVotePower() {

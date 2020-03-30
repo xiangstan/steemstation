@@ -1,15 +1,20 @@
 <template>
   <div id="app">
     <Navigation />
-    <div class="container has-text-left is-pad-top-5">
-      <div class="columns">
-        <div class="column is-one-quarter">
-          <Profile :show="Expands.profile" ref="profile"></Profile>
-        </div>
-        <div class="column">
-          <router-view />
+    <div v-if="SteemId">
+      <div class="container has-text-left is-pad-top-5">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <Profile :show="Expands.profile" ref="profile"></Profile>
+          </div>
+          <div class="column">
+            <router-view />
+          </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <Index></Index>
     </div>
     <Login v-if="Expands.login" ref="login" />
     <Menu v-if="SteemId" ref="menu" />
@@ -19,7 +24,7 @@
 </template>
 
 <script>
-import {Client} from "dsteem";
+import Index from "@/components/Index";
 import Loading from "@/components/Loading";
 import Login from "@/components/Login";
 import Menu from "@/components/Menu";
@@ -31,6 +36,7 @@ var steem = require("steem");
 export default {
   name: "SteemStation",
   components: {
+    Index,
     Loading,
     Login,
     Menu,
@@ -60,7 +66,6 @@ export default {
   },
   data() {
     return {
-      Client: Client
     }
   },
   methods: {
