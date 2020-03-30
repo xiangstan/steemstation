@@ -1,12 +1,15 @@
 <template>
-  <div class="home">
-    This is the SteemStation Home Page
-  </div>
+  <Status></Status>
 </template>
 
 <script>
+import Status from "@/components/Chain/Status";
+
 // @ is an alias to /src
 export default {
-  name: 'Home'
+  name: "Home",
+  components: {
+    Status
+  }
 }
 </script>

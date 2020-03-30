@@ -1,16 +1,26 @@
 <template>
   <div class="container has-text-left" v-if="Followers">
-      <p class="is-italic" v-if="Followers.length < 1">
-        {{Lang.follow.nothing_to + Lang.steem.load}}
-      </p>
-      <div v-else>
-        <h2 class="has-text-weight-bold is-size-3 is-capitalized">
-          {{Lang.follow.follower}}
-        </h2>
-        <p v-for="(user, idx) in Followers" :key="idx">
-          <a>{{user.follower}}</a>
+    <p class="is-italic" v-if="Followers.length < 1">
+      {{Lang.follow.nothing_to + Lang.steem.load}}
+    </p>
+    <div class="message">
+      <div class="message-header">
+        {{Lang.follow.follower}}
+      </div>
+      <div class="message-body">
+        <p class="follow-item" v-for="(user, idx) in Followers" :key="idx">
+          <strong>{{user.follower}}</strong>
+          <span class="is-pulled-right">
+            <router-link class="follow-icon" :title="Lang.steem.wallet" :to ="{name: 'Wallet', params: {id: user.follower}}">
+              <font-awesome-icon icon="wallet"></font-awesome-icon>
+            </router-link>
+            <router-link class="follow-icon" :title="Lang.steem.blog" :to ="{name: 'BlogList', params: {id: user.follower}}">
+              <font-awesome-icon icon="book-open"></font-awesome-icon>
+            </router-link>
+          </span>
         </p>
       </div>
+    </div>
   </div>
 </template>
 
@@ -28,10 +38,10 @@ module.exports={
     }
   },
   methods: {
-    GetFollow() {
+    GetFollow(steemId) {
       const that = this;
       window.setTimeout(function() {
-        that.Steem.Library.api.getFollowers(that.SteemId, 0, "blog", 1000, (err, result) => {
+        that.Steem.Library.api.getFollowers(steemId, 0, "blog", 1000, (err, result) => {
           if (err) {
             that.$store.commit("UpdFollow", [
               { "follower": '<p class="notification is-danger">Error: '+ err +'</p>' }
@@ -45,16 +55,35 @@ module.exports={
       }, 100);
     },
     // initial data pull
-    Init() {
+    Init(steemId) {
       this.$store.commit("UpdDataObj", { cat: "Loading", value: true });
-      this.GetFollow();
+      this.GetFollow(steemId);
     }
   },
   mounted() {
-    this.Init();
+    const steemId = this.$route.params.id;
+    if (typeof steemId !== "undefined") {
+      if (steemId !== this.User.SteemId) {
+        this.$root.SrcAccount(steemId);
+      }
+      this.Init(steemId);
+    }
   }
 };
 </script>
 
 <style scoped>
+.follow-item {
+  border-bottom: none;
+  padding: 1.0rem 0.5rem;
+}
+.follow-item:hover {
+  background-color: #fff;
+}
+.follow-icon {
+  color: rgba(0, 0, 0, 0.6);
+}
+.follow-icon:not(:last-child) {
+  margin: 0 20px;
+}
 </style>

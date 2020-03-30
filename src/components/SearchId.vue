@@ -31,10 +31,7 @@ export default {
       for(let obj in this.Expands) {
         this.$store.commit("UpdExpand", {cat: obj, value: false});
       }
-      //this.$store.commit("updFollowList", []);
-      //this.$store.commit("setLoading", true);
-      this.$root.$children[0].SrcAccount(steemId);
-      //this.$parent.searchAccount(steemId);
+      this.$root.SrcAccount(steemId);
     },
   },
   mounted() {

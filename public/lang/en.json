@@ -18,12 +18,15 @@
     "title": "Title"
   },
   "profile": {
+    "downvote": "Downvote",
+    "power": "Power",
+    "proxy": "Proxy",
     "savings": "Savings",
     "search": "Search",
     "steem": "STEEM",
     "steem_power": "STEEM Power",
     "steem_price": "STEEM Price",
-    "voting_power": "Voting Power"
+    "voting": "Voting"
   },
   "sms": {
     "alchemy_potion": "Alchemy Potion",
@@ -51,12 +54,17 @@
     "hive": "hive",
     "info_center": " Infor Center",
     "ing": "ing",
+    "joined": "Joined",
     "load": "Load",
+    "login": "Log In",
+    "node": "Node",
+    "ping": "PING",
     "properties": "Properties",
     "revoke_access": "Revoke access from ",
     "select": "Select",
     "space": " ",
     "splinterlands": "Splinterlands",
+    "status": "Status",
     "steem": "STEEM",
     "url_cannot_empty": "URL Cannot be Empty",
     "wallet": "Wallet",

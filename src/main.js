@@ -5,12 +5,12 @@ import store from './store'
 import axios from "axios";
 import ssc from "sscjs";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBookOpen, faCheckCircle, faCoins, faCommentAlt, faEdit, faExclamationTriangle, faKey, faLanguage, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen, faCheckCircle, faClock, faCoins, faCommentAlt, faEdit, faExclamationTriangle, faKey, faLanguage, faMapMarkerAlt, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { faChrome } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "./../node_modules/bulma/css/bulma.min.css";
 
-library.add(faBookOpen, faCheckCircle, faChrome, faCoins, faCommentAlt, faEdit, faExclamationTriangle, faKey, faLanguage, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet)
+library.add(faBookOpen, faCheckCircle, faChrome, faClock, faCoins, faCommentAlt, faEdit, faExclamationTriangle, faKey, faLanguage, faMapMarkerAlt, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet)
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
@@ -42,7 +42,7 @@ new Vue({
     // convert time to local timezone
     CvtTime(time) {
       const temp = new Date(time +".000Z");
-      return temp.getFullYear() + "-" + ("0" + (temp.getMonth() + 1)).slice(-2) + "-" + ("0" + temp.getDate()).slice(-2) + " " + temp.getHours() + ":" + temp.getMinutes();
+      return temp.getFullYear() + "-" + ("0" + (temp.getMonth() + 1)).slice(-2) + "-" + ("0" + temp.getDate()).slice(-2) + " " + ("0" + temp.getHours()).slice(-2) + ":" + ("0" + temp.getMinutes()).slice(-2);
     },
     /* get Initial language pack */
     GetLang(lang = false) {

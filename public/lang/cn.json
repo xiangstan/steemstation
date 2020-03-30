@@ -18,12 +18,15 @@
     "title": "题目"
   },
   "profile": {
+    "downvote": "踩",
+    "power": "能量",
+    "proxy": "代理",
     "savings": "储蓄",
     "search": "搜索",
     "steem": "STEEM",
     "steem_power": "代币影响力",
     "steem_price": "STEEM价格",
-    "voting_power": "投票力"
+    "voting": "投票"
   },
   "sms": {
     "alchemy_potion": "炼金术药水",
@@ -52,11 +55,16 @@
     "info_center": "信息中心",
     "ing": "中",
     "load": "加载",
+    "login": "登陆",
+    "joined": "加入日期",
+    "node": "结点",
+    "ping": "测速",
     "properties": "属性",
     "revoke_access": "取消授权",
     "select": "选择",
     "space": "",
     "splinterlands": "Splinterlands",
+    "status": "状态",
     "steem": "STEEM",
     "url_cannot_empty": "URL不能为空",
     "wallet": "钱包",
