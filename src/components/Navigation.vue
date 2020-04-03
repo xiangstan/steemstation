@@ -12,12 +12,15 @@
         </a>
       </div>
       <div id="navbarBasicExample" class="navbar-menu" v-if="Lang">
-        <div class="navbar-start">
-          <router-link class="navbar-item" to="/chain">
-            {{Lang.steem.chain}}
-          </router-link>
-        </div>
         <div class="navbar-end">
+          <div class="navbar-item">
+            <p class="control has-icons-left">
+              <input class="input" type="text" v-model="srcData" @keyup.enter="Search" />
+              <span class="icon is-small is-left">
+                <font-awesome-icon icon="search"></font-awesome-icon>
+              </span>
+            </p>
+          </div>
           <div class="navbar-item">
             <template v-if="SteemId">
               <router-link class="navbar-item" to="/editor">
@@ -56,22 +59,53 @@ export default {
     },
     ProfileImg() {
       if (typeof this.$store.state.Profile !== "undefined") {
-        const temp = JSON.parse(this.$store.state.Profile.json_metadata);
-        return temp.profile.profile_image;
+        const json = this.$store.state.Profile.json_metadata;
+        if (typeof json !== "undefined") {
+          const temp = JSON.parse(json);
+          return temp.profile.profile_image;
+        }
+        else { return false; }
       }
       return false;
-
     }
   },
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      srcData: "",
     }
   },
   methods: {
     // open login modal
     Login() {
       this.$store.commit("UpdExpand", {cat: "login", value: true});
+    },
+    // search bar
+    Search() {
+      let srcType = this.srcData[0];
+      let srcTerm = this.srcData.slice(1);
+      const srcMsg = {
+        cn: "请用@（STEEM ID）或者#（Tag）开始搜索的讯息",
+        en: "Please start your search with @ (STEEM ID) or # (Tag)"
+      };
+      const srcMethod = {
+        "@": () => {
+          this.$root.SrcAccount(srcTerm);
+          this.$router.push("/@" + srcTerm);
+          return;
+        },
+        "#": () => {
+          this.$root.AddToast("功能尚未开放，Under development", "warn");
+          //this.$router.push("/tag/" + srcTerm);
+          return;
+        }
+      };
+      if (typeof srcMethod[srcType] !== "function") {
+        this.$root.AddToast(srcMsg[this.Lang.index], "bad");
+      }
+      else {
+        srcMethod[srcType]()
+      }
     }
   }
 }
