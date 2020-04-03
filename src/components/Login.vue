@@ -71,6 +71,8 @@ export default {
           //window.steem_keychain.requestVerifyKey(account.trim(), Date.now(), "Posting", (r) => {
           window.steem_keychain.requestSignBuffer(account, account+Date.now(), "Posting", (r) => {
             if (r.success) {
+              localStorage.setItem("steemId", account);
+              this.$store.commit("UpdDataObj", {cat: "SteemId", value: account});
               this.$root.SrcAccount(account, "login");
             }
           });

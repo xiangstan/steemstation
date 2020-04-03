@@ -79,14 +79,14 @@ export default {
     Init() {
       this.$store.commit("UpdSteemJs", { cat: "Library", value: steem });
       const steemId = localStorage.getItem("steemId");
-      let page = localStorage.getItem("page");
       this.$root.SteemGlobalProperties("Steem");
       window.setTimeout(() => {
         this.$root.SteemCurMedHisPrice();
         this.$root.SteemGetRewardFund();
       }, 100);
       if (steemId) {
-        this.$root.SrcAccount(steemId);
+        this.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
+        this.$root.SrcAccount(steemId, "login");
       }
       this.$root.GetLang();
     },

@@ -54,6 +54,11 @@ const routes = [
     name: 'Editor',
     component: () => import(/* webpackChunkName: "editor" */ '../views/User/Editor.vue')
   },
+  {
+    path: '/tag/:tag',
+    name: 'Tag',
+    component: () => import(/* webpackChunkName: "editor" */ '../views/Blog/Tag.vue')
+  },
 ]
 
 const router = new VueRouter({

@@ -5,12 +5,12 @@ import store from './store'
 import axios from "axios";
 import ssc from "sscjs";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBookOpen, faCheckCircle, faClock, faCoins, faCommentAlt, faEdit, faExclamationTriangle, faKey, faLanguage, faMapMarkerAlt, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen, faCheckCircle, faChevronCircleDown, faChevronCircleUp, faClock, faCoins, faCommentAlt, faEdit, faExclamationTriangle, faKey, faLanguage, faMapMarkerAlt, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { faChrome } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import "./../node_modules/bulma/css/bulma.min.css";
 
-library.add(faBookOpen, faCheckCircle, faChrome, faClock, faCoins, faCommentAlt, faEdit, faExclamationTriangle, faKey, faLanguage, faMapMarkerAlt, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet)
+library.add(faBookOpen, faCheckCircle, faChevronCircleDown, faChevronCircleUp, faChrome, faClock, faCoins, faCommentAlt, faEdit, faExclamationTriangle, faKey, faLanguage, faMapMarkerAlt, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet)
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
@@ -90,9 +90,8 @@ new Vue({
       else {
         that.Steem.Library.api.getAccounts([steemId], function(err, result) {
           if (err === null) {
-            if (method === "login" || localStorage.getItem("steemId")) {
-              localStorage.setItem("steemId", steemId);
-              that.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
+            if (method === "login" && localStorage.getItem("steemId")) {
+              //localStorage.setItem("steemId", steemId);
               that.$store.commit("UpdDataObj", {cat: "Profile", value: result[0]});
               that.$store.commit("UpdExpand", {cat: "login", value: false});
             }
