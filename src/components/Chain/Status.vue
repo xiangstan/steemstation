@@ -1,6 +1,6 @@
 <template>
   <div class="message">
-    <div class="message-header is-size-6">
+    <div class="message-header is-size-6" v-if="detail">
       {{Lang.steem.node + Lang.steem.space + Lang.steem.status}}
     </div>
     <div class="message-body">
@@ -12,7 +12,7 @@
               <br />
               <em><a :href="node.url" target="_blank" :title="node.name">{{node.url}}</a></em>
             </p>
-            <p>
+            <p v-if="detail">
               {{Lang.steem.ping}}: {{node.ping}} <em>ms</em>
             </p>
           </div>
@@ -77,7 +77,6 @@ export default {
     }
   },
   mounted() {
-    console.log(axios);
     this.Init();
   },
   props: {

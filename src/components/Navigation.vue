@@ -13,7 +13,7 @@
       </div>
       <div id="navbarBasicExample" class="navbar-menu" v-if="Lang">
         <div class="navbar-end">
-          <div class="navbar-item">
+          <div class="navbar-item" v-if="SteemId">
             <p class="control has-icons-left">
               <input class="input" type="text" v-model="srcData" @keyup.enter="Search" />
               <span class="icon is-small is-left">
@@ -32,7 +32,7 @@
             </template>
             <div class="buttons" v-if="!SteemId">
               <a class="button is-light" @click="Login">
-                Log in
+                {{Lang.steem.login}}
               </a>
             </div>
           </div>
@@ -45,6 +45,7 @@
 
 <script>
 import Language from "@/components/Language";
+
 export default {
   name: 'Navigation',
   components: {
@@ -113,7 +114,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.navbar-image{
+.navbar-image {
   border-radius: 50%;
   box-shadow: 0px 0px 3px #444;
   height: 32px;

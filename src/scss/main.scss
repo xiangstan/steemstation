@@ -1,6 +1,22 @@
+$primary: #00d1b2!important;
 $size5: 1.25rem;
 $size7: 0.75rem;
 
 .CodeMirror.cm-s-paper.CodeMirror-wrap {
   z-index: 0 !important;
+}
+.is-marg-bt-5 {
+  margin-bottom: $size5;
+}
+.is-pad-tp-5 {
+  padding-top: $size5;
+}
+.is-pad-vt-5 {
+  padding: $size5 0;
+}
+.is-pad-5 {
+  padding: $size5;
+}
+.is-strike-through {
+  text-decoration: line-through;
 }

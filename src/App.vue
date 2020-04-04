@@ -20,10 +20,12 @@
     <Menu v-if="SteemId" ref="menu" />
     <Toast />
     <Loading />
+    <FooterBox></FooterBox>
   </div>
 </template>
 
 <script>
+import FooterBox from "@/components/Footer";
 import Index from "@/components/Index";
 import Loading from "@/components/Loading";
 import Login from "@/components/Login";
@@ -36,6 +38,7 @@ var steem = require("steem");
 export default {
   name: "SteemStation",
   components: {
+    FooterBox,
     Index,
     Loading,
     Login,

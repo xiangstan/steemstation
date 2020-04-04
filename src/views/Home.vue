@@ -1,5 +1,5 @@
 <template>
-  <Status></Status>
+  <Status :detail="true"></Status>
 </template>
 
 <script>
