@@ -1,7 +1,10 @@
 <template>
   <div>
     <h3 class="has-text-weight-bold is-size-5 is-marg-bottom-7">
-      <a class="is-decoration-none" :href="GetUrl()+blog.url" target="_blank">{{blog.title}}</a>
+      <router-link class="is-decoration-none" :to="'/@' + User + '/blog/' + blog.permlink">
+        {{blog.title}}
+      </router-link>
+      <!-- <a class="is-decoration-none" :href="GetUrl()+blog.url" target="_blank">{{blog.title}}</a> -->
     </h3>
     <h4 class="is-size-7 is-marg-bottom-7">
       <strong>{{blog.author}}</strong> in <span class="blog-tag">{{blog.category}}</span> &#9830; {{CvtTime(blog.last_update)}}
@@ -67,9 +70,7 @@ export default {
       let value = e.currentTarget.dataset.vote;
       if (that.HasKeychain) {
         // account, permlink, author, weight, callback, rpc
-        console.log(that.LoggedIn, that.blog.permlink, that.blog.author, value)
         window.steem_keychain.requestVote(that.LoggedIn, that.blog.permlink, that.blog.author, value, (r) => {
-          console.log("I am here!")
           console.log(r);
           if (r.success) {
             //console.log(r);
@@ -88,31 +89,10 @@ export default {
 }
 </script>
 
-<style scoped>
-.blog-tag {
-  background-color: #fff;
-  border: 1px solid #dbdbdb;
-  border-radius: 3px;
-  padding: 5px;
-}
+<style lang="scss" scoped>
+@import "@/scss/main.scss";
+
 .is-decoration-none {
   text-decoration: none!important
-}
-.icon-section {
-  display: inline-block;
-  margin-right: 1rem;
-}
-.vote-icon {
-  color: #aaa;
-  -webkit-transition:all 500ms ease-in-out;
-  -moz-transition:all 500ms ease-in-out;
-  -ms-transition:all 500ms ease-in-out;
-  transition:all 500ms ease-in-out;
-}
-.vote-icon-up:hover {
-  color: #19d160
-}
-.vote-icon-down:hover {
-  color: #FF3860
 }
 </style>

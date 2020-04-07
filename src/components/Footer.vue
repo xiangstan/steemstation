@@ -1,5 +1,5 @@
 <template>
-  <div class="has-background-dark has-text-light has-text-left">
+  <div class="has-background-dark has-text-light has-text-left is-marg-tp-5">
     <div class="container is-pad-vt-5">
       STEEM Station uses Localstorage to store STEEM ID, no password has been saved within the application.
     </div>

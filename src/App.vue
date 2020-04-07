@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navigation />
-    <div v-if="SteemId">
+    <div class="main-content" v-if="SteemId">
       <div class="container has-text-left is-pad-top-5">
         <div class="columns">
           <div class="column is-one-quarter">
@@ -128,5 +128,8 @@ export default {
 }
 .is-pad-top-5 {
   padding-top: $size5;
+}
+.main-content {
+  min-height: 80vh
 }
 </style>
