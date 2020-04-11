@@ -10,6 +10,9 @@
       <div class="message-body">
         <p class="follow-item" v-for="(user, idx) in Following" :key="idx">
           <strong>{{user.following}}</strong>
+          <span class="liker-hand" v-if="isLiker(user.following)">
+            <img src="@/assets/images/clap.png" />
+          </span>
           <span class="is-pulled-right">
             <router-link class="follow-icon" :title="Lang.steem.wallet" :to ="{name: 'Wallet', params: {id: user.following}}">
               <font-awesome-icon icon="wallet"></font-awesome-icon>
@@ -25,11 +28,16 @@
 </template>
 
 <script>
+import MngLikers from "@/Func/Likers.js";
+
 export default {
   name: "Following",
   computed: {
     Following() { return this.$store.state.Follow.Following; },
     Lang() { return this.$store.state.Lang; },
+    Likers() {
+      return this.$store.state.Liker;
+    },
     Steem() {
       return this.$store.state.Steem;
     },
@@ -38,7 +46,17 @@ export default {
       return this.$store.state.User.SteemId;
     }
   },
+  data() {
+    return {
+      MngLikers: new MngLikers()
+    }
+  },
   methods: {
+    // initial data pull
+    Init(steemId) {
+      this.$store.commit("UpdDataObj", { cat: "Loading", value: true });
+      this.GetFollow(steemId);
+    },
     GetFollow(steemId, start = 0, limit = 1000) {
       const that = this;
       window.setTimeout(function() {
@@ -55,10 +73,9 @@ export default {
         });
       }, 100);
     },
-    // initial data pull
-    Init(steemId) {
-      this.$store.commit("UpdDataObj", { cat: "Loading", value: true });
-      this.GetFollow(steemId);
+    // check if the selected steemid is a likeCoin registered account
+    isLiker(steemId) {
+      return (this.MngLikers.isLiker(steemId, this.Likers)) ? true : false;
     }
   },
   mounted() {
@@ -68,6 +85,7 @@ export default {
         this.$root.SrcAccount(steemId);
       }
       this.Init(steemId);
+      this.$root.GetLiker();
     }
   }
 };

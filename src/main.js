@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import axios from "axios";
 import ssc from "sscjs";
+import MngDates from "@/Func/MngDates.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faBookOpen, faCheckCircle, faChevronCircleDown, faChevronCircleUp, faClock, faCoins, faCommentAlt, faEdit, faExclamationTriangle, faKey, faLanguage, faMapMarkerAlt, faRetweet, faSearch, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { faChrome } from '@fortawesome/free-brands-svg-icons';
@@ -26,6 +27,7 @@ new Vue({
   },
   data() {
     return {
+      MngDates: new MngDates(),
       ssc: new ssc("https://api.steem-engine.com/rpc/")
     }
   },
@@ -43,6 +45,25 @@ new Vue({
     CvtTime(time) {
       const temp = new Date(time +".000Z");
       return temp.getFullYear() + "-" + ("0" + (temp.getMonth() + 1)).slice(-2) + "-" + ("0" + temp.getDate()).slice(-2) + " " + ("0" + temp.getHours()).slice(-2) + ":" + ("0" + temp.getMinutes()).slice(-2);
+    },
+    GetLiker() {
+      const RightNow = this.MngDates.Today();
+      const LikerCheck = this.$store.state.Expands.likers;
+      if (!LikerCheck || RightNow > LikerCheck) {
+        this.GetFollowing("cn-likers");
+      }
+    },
+    // get following
+    GetFollowing(steemId, start = 0, limit = 1000) {
+      const that = this;
+      that.Steem.Library.api.getFollowing(steemId, start, "blog", limit, (err, result) => {
+        if (result && result.length > 0) {
+          result.forEach(following => {
+            that.$store.commit("AddLiker", following.following);
+          });
+          //that.GetFollowing(steemId, result[result.length - 1].following, limit);
+        }
+      });
     },
     /* get Initial language pack */
     GetLang(lang = false) {

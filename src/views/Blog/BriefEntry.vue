@@ -4,13 +4,14 @@
       <router-link class="is-decoration-none" :to="'/@' + User + '/blog/' + blog.permlink">
         {{blog.title}}
       </router-link>
-      <!-- <a class="is-decoration-none" :href="GetUrl()+blog.url" target="_blank">{{blog.title}}</a> -->
     </h3>
     <h4 class="is-size-7 is-marg-bottom-7">
       <strong>{{blog.author}}</strong> in <span class="blog-tag">{{blog.category}}</span> &#9830; {{CvtTime(blog.last_update)}}
     </h4>
     <div class="is-size-6 is-marg-bottom-7">
-      <a class="is-decoration-none" :href="GetUrl()+blog.url" target="_blank">{{GetBrief(blog.body)}}...</a>
+      <router-link class="is-decoration-none" :to="'/@' + User + '/blog/' + blog.permlink">
+        {{GetBrief(blog.body)}}...
+      </router-link>
     </div>
     <p>
       <span class="icon-section">
@@ -22,12 +23,17 @@
         </a>
       </span>
       <font-awesome-icon icon="comment-alt"></font-awesome-icon> {{blog.children}}
+      <span class="liker-hand" v-if="isLiker(blog.author)">
+        <img src="@/assets/images/clap.png" />
+      </span>
       <span class="is-pulled-right">${{blog.pending_payout_value.split(" ")[0]}}</span>
     </p>
   </div>
 </template>
 
 <script>
+import MngLikers from "@/Func/Likers.js";
+
 export default {
   name: "BriefEntry",
   computed: {
@@ -38,9 +44,17 @@ export default {
     Lang() {
       return this.$store.state.Lang;
     },
+    Likers() {
+      return this.$store.state.Liker;
+    },
     LoggedIn() { return this.$store.state.SteemId; },
     User() {
       return this.$store.state.User.SteemId;
+    }
+  },
+  data() {
+    return {
+      MngLikers: new MngLikers()
     }
   },
   methods: {
@@ -63,6 +77,10 @@ export default {
         hive: "http://hive.log"
       };
       return opt[this.page];
+    },
+    // check if the selected steemid is a likeCoin registered account
+    isLiker(steemId) {
+      return (this.MngLikers.isLiker(steemId, this.Likers)) ? true : false;
     },
     // vote up / down
     Vote(e) {

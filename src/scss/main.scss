@@ -36,6 +36,29 @@ $size7: 0.75rem;
 .is-strike-through {
   text-decoration: line-through;
 }
+.liker-hand {
+  background-color: #28646e;
+  -webkit-border: 1px solid #50e3c2;
+  -moz-border: 1px solid #50e3c2;
+  border: 1px solid #50e3c2;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  display: inline-block;
+  height: 18px;
+  margin: 0 0.3rem;
+  margin-top: -4px;
+  padding: 0.1rem;
+  position: relative;
+  vertical-align: middle;
+  width: 18px;
+}
+.liker-hand img {
+  display: block;
+  margin: auto;
+  padding-top: 2px;
+  width: 80%;
+}
 .vote-icon {
   color: #aaa;
   -webkit-transition:all 500ms ease-in-out;

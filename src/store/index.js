@@ -14,6 +14,7 @@ export default new Vuex.Store({
     },
     Expands: {
       blog: false,
+      likers: false,
       login: false,
       profile: false,
       sms: false,
@@ -25,6 +26,7 @@ export default new Vuex.Store({
       Following: false
     },
     Lang: false,
+    Liker: [],
     Loading: false,
     Msg: {
       alert: false,
@@ -47,6 +49,10 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    // add liker id
+    AddLiker(state, data) {
+      state.Liker.push(data);
+    },
     // remove existing item from toasts
     PopToast(state, idx) {
       state.Toast = state.Toast.filter(t => t.id !== idx);

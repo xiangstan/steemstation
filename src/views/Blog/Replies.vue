@@ -16,18 +16,25 @@
         </a> &nbsp;
         <a class="has-text-dark" @click="ShowVotes = !ShowVotes">{{cmt.active_votes.length}}</a>
       </span>
-      <span class="is-pulled-right">${{cmt.pending_payout_value.split(" ")[0]}}</span>
+      <span>${{cmt.pending_payout_value.split(" ")[0]}}</span>
+      <span class="liker-hand" v-if="isLiker(cmt.author)">
+        <img src="@/assets/images/clap.png" />
+      </span>
     </p>
   </div>
 </template>
 
 <script>
 import {CalcReputation} from "@/Func/SteemFunc.js";
+import MngLikers from "@/Func/Likers.js";
 import showdown from "showdown";
 
 export default {
   name: "Replies",
   computed: {
+    Likers() {
+      return this.$store.state.Liker;
+    },
     Reputation() {
       if (this.cmt && typeof this.cmt.author_reputation !== "undefined" ) {
         return CalcReputation(this.cmt.author_reputation);
@@ -38,12 +45,17 @@ export default {
   data() {
     return {
       Converter: new showdown.Converter(),
+      MngLikers: new MngLikers()
     }
   },
   methods: {
     // call $root.CvtTime(time)
     CvtTime(time) {
       return this.$root.CvtTime(time);
+    },
+    // check if the selected steemid is a likeCoin registered account
+    isLiker(steemId) {
+      return (this.MngLikers.isLiker(steemId, this.Likers)) ? true : false;
     },
     Vote() {}
   },
@@ -54,5 +66,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/main.scss";
 </style>

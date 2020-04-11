@@ -26,6 +26,9 @@
         <div v-html="Converter.makeHtml(blog.body)"></div>
         <!-- Tags -->
         <hr />
+        <div v-if="isLiker">
+          <iframe :src="'https://button.like.co/in/embed/' + GetLikerId + '/button?referrer=' + BlogUrl" frameborder="0" allowfullscreen="" scrolling="no"></iframe>
+        </div>
         <p class="is-pad-tp-5">
           <a class="blog-tag-link" v-for="(tag, idx) in metadata.tags" :key="idx">
             <span class="blog-tag" v-if="tag.length > 0">
@@ -80,6 +83,7 @@
 
 <script>
 import {CalcReputation} from "@/Func/SteemFunc.js";
+import MngLikers from "@/Func/Likers.js";
 import Replies from "@/views/Blog/Replies";
 import showdown from "showdown";
 
@@ -89,12 +93,32 @@ export default {
     Replies
   },
   computed: {
+    // get blog's url
+    BlogUrl() {
+      return window.location.href;
+    },
+    GetLikerId() {
+      let temp = this.LikerId();
+      return temp;
+    },
     // check if steem_keychain extension is installed
     HasKeychain() {
       return (window.steem_keychain) ? true : false;
     },
+    // check if the selected steemid is a likeCoin registered account
+    isLiker() {
+      if (!this.Likers) {
+        return false;
+      }
+      else {
+        return (this.MngLikers.isLiker(this.blog.author, this.Likers)) ? true : false;
+      }
+    },
     Lang() {
       return this.$store.state.Lang;
+    },
+    Likers() {
+      return this.$store.state.Liker;
     },
     LoggedIn() {
       return this.$store.state.SteemId;
@@ -118,12 +142,22 @@ export default {
     },
     User() {
       return this.$store.state.User.SteemId;
-    }
+    },
+    UserMetaData() {
+      if (this.UserProfile) {
+        const temp = JSON.parse(this.UserProfile.json_metadata)
+        return temp.profile;
+      }
+      else {
+        return false;
+      }
+    },
   },
   data() {
     return {
       blog: false,
       Converter: new showdown.Converter(),
+      MngLikers: new MngLikers(),
       replies: false,
       ShowVotes: false
     }
@@ -138,7 +172,6 @@ export default {
       const that = this;
       that.$root.Steem.Library.api.getContent(steemId, permlink, (error, result) => {
         if (result) {
-          console.log(result);
           this.blog = result;
         }
       });
@@ -151,6 +184,13 @@ export default {
           this.replies = result;
         }
       });
+    },
+    LikerId() {
+      const profile = this.$store.state.User.Profile;
+      const metadata = JSON.parse(profile.json_metadata)
+      const location = metadata.profile.location;
+      const loc = location.split(":");
+      return loc[1];
     },
     // vote up / down
     Vote(e) {
@@ -194,5 +234,36 @@ export default {
 }
 .blog-tag-link {
   color: #4a4a4a;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.likecoin-button {
+  bottom: 20px;
+  position: fixed;
+  right: 20px;
+  height: 240px;
+  width: 500px;
+  overflow: hidden;
+  z-index: 2000
+}
+.likecoin-button.elem-hide {
+  display: none;
+}
+.likecoin-button > div {
+  padding-top: 49.48454%;
+}
+.likecoin-button > iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -ms-zoom: 0.75;
+  -moz-transform: scale(0.75);
+  -moz-transform-origin: 0 0;
+  -o-transform: scale(0.75);
+  -o-transform-origin: 0 0;
+  -webkit-transform: scale(0.75);
+  -webkit-transform-origin: 0 0;
 }
 </style>

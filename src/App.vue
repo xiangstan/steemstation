@@ -90,6 +90,7 @@ export default {
       if (steemId) {
         this.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
         this.$root.SrcAccount(steemId, "login");
+        this.$root.GetLiker();
       }
       this.$root.GetLang();
     },
