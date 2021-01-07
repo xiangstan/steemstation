@@ -10,7 +10,7 @@
             <div class="media">
               <div class="media-left">
                 <figure>
-                  sdfsd
+                  
                 </figure>
               </div>
               <div class="media-content">
