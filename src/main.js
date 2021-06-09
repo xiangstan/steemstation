@@ -2,13 +2,14 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import VueNear from "vue-near";
 // font awesome
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faBookOpen, faChevronCircleDown, faChevronCircleUp, faClock, faCommentAlt, faEdit, faKey, faLanguage, faMapMarkerAlt, faSearch, faSpinner, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
+import { faBookOpen, faChevronCircleDown, faChevronCircleUp, faClock, faCommentAlt, faDollarSign, faEdit, faKey, faLanguage, faMapMarkerAlt, faSearch, faSpinner, faSync, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
 import { faChrome } from '@fortawesome/free-brands-svg-icons';
 
-library.add(faBookOpen, faChrome, faChevronCircleDown, faChevronCircleUp, faClock, faCommentAlt, faEdit, faKey, faLanguage, faMapMarkerAlt, faSearch, faSpinner, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet);
+library.add(faBookOpen, faChrome, faChevronCircleDown, faChevronCircleUp, faClock, faCommentAlt, faDollarSign, faEdit, faKey, faLanguage, faMapMarkerAlt, faSearch, faSpinner, faSync, faTh, faTimes, faTimesCircle, faUserCircle, faUserFriends, faUserPlus, faWallet);
 dom.watch();
 
 // multilanguage
@@ -24,5 +25,9 @@ const app = createApp(App);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(store).use(i18n).use(router);
+app.use(VueNear, {
+  // Needs the environment for the correct RPC to use
+  env: process.env.NODE_ENV || 'development',
+})
 
 app.mount("#app");

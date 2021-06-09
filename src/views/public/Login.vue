@@ -103,15 +103,16 @@ export default {
         );
       }
       else {
+        const that = this;
         steem.api.getAccounts([account], function(err, result) {
           if (err === null) {
             console.log(result[0]);
             localStorage.setItem("steemId", account);
-            this.$store.commit("UpdProf", {cat: "steem", value: result[0]});
-            this.$store.commit("UpdShow", {cat: "login", value: false});
+            that.$store.commit("UpdProf", {cat: "steem", value: result[0]});
+            that.$store.commit("UpdShow", {cat: "login", value: false});
           }
           else {
-            this.$store.commit("UpdDataObj", {cat: "Msg", value: {
+            that.$store.commit("UpdDataObj", {cat: "Msg", value: {
               alert: true,
               code: false,
               text: err

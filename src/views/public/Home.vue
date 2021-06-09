@@ -79,41 +79,31 @@
       </div>
     </section>
 
-    <!--<section class="section contact">
+    <section class="section contact">
       <div class="container">
         <div class="columns">
           <div class="column">
-            <h2 class="is-size-5 is-marg-bt-5">STEEM STATION</h2>
-            <p class="is-size-7 is-marg-bt-5">
-              <template v-if="Lang.index === 'cn'">
-                STEEM STATION原本是<em>@lnakuma</em>出于爱好，练习STEEM区块链编程开始的。渐渐地，形成了一个整体前端网站。
-              </template>
-              <template v-else>
-                STEEM STATION started as a hobby work by <em>@lnakuma</em>, who has tried to learn STEEM Blockchain programming. And next thing you know, there is a whole web app.
-              </template>
+            <h2 class="is-size-5 mt-2">STEEM STATION</h2>
+            <p class="is-size-7 mt-5">
+              <span v-html="Message['whatis']"></span>
             </p>
             <p class="has-text-grey-light is-size-7">
-              <template v-if="Lang.index === 'cn'">
-                本有由<em>@lnakuma</em>创建和维护
-              </template>
-              <template v-else>
-                This site is powered and maintained by <em>@lnakuma</em>
-              </template>
-               © 2020.
+              <span v-html="Message['maintainby']"></span>
+               © 2020 - {{thisYear}}.
             </p>
           </div>
           <div class="column">
-            <h2 class="is-size-5 is-marg-bt-5">{{Lang.steem.contact_us}}</h2>
+            <h2 class="is-size-5 mt-2">{{$t("contact_us")}}</h2>
             <p class="is-size-7">
               Email:
             </p>
           </div>
           <div class="column">
-            <h2 class="is-size-5 is-marg-bt-5">{{Lang.steem.follow_us}}</h2>
+            <h2 class="is-size-5 mt-2">{{$t("follow_us")}}</h2>
           </div>
         </div>
       </div>
-    </section> -->
+    </section>
 
   </div>
 </template>
@@ -123,16 +113,21 @@ import { createToast } from "mosha-vue-toastify";
 import { hasKeychain } from "@/utils/steem/keychain";
 import "mosha-vue-toastify/dist/style.css";
 import Status from "@/components/steem/Status";
+import { thisYear } from "@/utils/date";
 import Witness from "@/components/steem/Witness";
 
 const message = {
   "cn": {
+    maintainby: "本有由<em>@lnakuma</em>创建和维护",
     sub: "一扇进入密码流的社交媒体网络的始点",
-    title: "加入STEEM"
+    title: "加入STEEM",
+    whatis: "STEEM STATION原本是<em>@lnakuma</em>出于爱好，练习STEEM区块链编程开始的。渐渐地，形成了一个整体前端网站。"
   },
   "en": {
+    maintainby: "This site is powered and maintained by <em>@lnakuma</em>",
     sub: "An Entry point for the cryptocurrent based Social Media Network",
-    title: "GET STARTED WITH STEEM"
+    title: "GET STARTED WITH STEEM",
+    whatis: "STEEM STATION was started as a hobby work by <em>@lnakuma</em>, who has tried to learn STEEM Blockchain programming. And next thing you know, there is a whole web app."
   }
 }
 
@@ -153,6 +148,7 @@ export default {
       load: {
         ChainProperties: 0,
       },
+      thisYear: thisYear(),
       Tiles: "status",
       Witness: false
     }
