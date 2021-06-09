@@ -1,15 +1,15 @@
 <template>
   <div>
-    <h3 class="has-text-weight-bold is-size-5 is-marg-bottom-7">
-      <router-link class="is-decoration-none" :to="'/@' + User + '/blog/' + blog.permlink">
+    <h3 class="has-text-weight-bold is-size-5 mb-1">
+      <router-link class="is-decoration-none" :to="'/@' + user + '/blog/' + blog.permlink">
         {{blog.title}}
       </router-link>
     </h3>
-    <h4 class="is-size-7 is-marg-bottom-7">
+    <h4 class="is-size-7 mb-1">
       <strong>{{blog.author}}</strong> in <span class="blog-tag">{{blog.category}}</span> &#9830; {{CvtTime(blog.last_update)}}
     </h4>
-    <div class="is-size-6 is-marg-bottom-7">
-      <router-link class="is-decoration-none" :to="'/@' + User + '/blog/' + blog.permlink">
+    <div class="is-size-6 mb-1">
+      <router-link class="is-decoration-none" :to="'/@' + user + '/blog/' + blog.permlink">
         {{GetBrief(blog.body)}}...
       </router-link>
     </div>
@@ -22,17 +22,20 @@
           <font-awesome-icon class="vote-icon vote-icon-down" icon="chevron-circle-down"></font-awesome-icon>
         </a>
       </span>
-      <font-awesome-icon icon="comment-alt"></font-awesome-icon> {{blog.children}}
+      <font-awesome-icon icon="comment-alt" /> {{blog.children}}
       <span class="liker-hand" v-if="isLiker(blog.author)">
-        <img src="@/assets/images/clap.png" />
+        <img src="/img/clap.png" />
       </span>
-      <span class="is-pulled-right">${{blog.pending_payout_value.split(" ")[0]}}</span>
+      <span class="is-pulled-right">
+        ${{blog.pending_payout_value.split(" ")[0]}}
+      </span>
     </p>
   </div>
 </template>
 
 <script>
-import MngLikers from "@/Func/Likers.js";
+import { cvtTime } from "@/utils/date";
+import { isLikers } from "@/utils/likers";
 
 export default {
   name: "BriefEntry",
@@ -47,20 +50,14 @@ export default {
     Likers() {
       return this.$store.state.Liker;
     },
-    LoggedIn() { return this.$store.state.SteemId; },
-    User() {
-      return this.$store.state.User.SteemId;
-    }
-  },
-  data() {
-    return {
-      MngLikers: new MngLikers()
-    }
+    LoggedIn() {
+      return this.$store.state.SteemId;
+    },
   },
   methods: {
     // call $root.CvtTime(time)
     CvtTime(time) {
-      return this.$root.CvtTime(time);
+      return cvtTime(time);
     },
     /* create a brief description of blog content */
     GetBrief(data) {
@@ -80,7 +77,7 @@ export default {
     },
     // check if the selected steemid is a likeCoin registered account
     isLiker(steemId) {
-      return (this.MngLikers.isLiker(steemId, this.Likers)) ? true : false;
+      return (isLikers(steemId, this.Likers)) ? true : false;
     },
     // vote up / down
     Vote(e) {
@@ -102,14 +99,13 @@ export default {
     }
   },
   props: {
-    blog: { type: Object }
+    blog: { type: Object },
+    user: { type: String }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/main.scss";
-
 .is-decoration-none {
   text-decoration: none!important
 }

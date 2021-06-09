@@ -1,18 +1,20 @@
 <template>
-  <div v-if="Lang">
+  <div>
     <div class="message">
       <div class="message-header">
-        {{Lang.steem.blog}}
+        {{$t("blog")}}
       </div>
       <div class="message-body">
-        <BriefEntry class="blog-entry is-relative" v-for="(blog, idx) in Blogs" :blog="blog" :key="idx"></BriefEntry>
+        <BriefEntry class="blog-entry is-relative" v-for="(blog, idx) in Blogs" :blog="blog" :user="User" :key="idx" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import BriefEntry from "@/views/Blog/BriefEntry";
+import BriefEntry from "@/views/blog/Brief";
+import { createToast } from "mosha-vue-toastify";
+import "mosha-vue-toastify/dist/style.css";
 
 export default {
   name: "BlogList",
@@ -21,15 +23,13 @@ export default {
   },
   computed: {
     Blogs() {
-      return this.$store.state.User.Blogs;
+      return this.$store.state.Blogs;
     },
-    Lang() { return this.$store.state.Lang; },
-    Steem() {
-      return this.$store.state.Steem;
+    SteemId() {
+      return this.$store.state.SteemId;
     },
-    SteemId() { return this.$store.state.SteemId; },
     User() {
-      return this.$store.state.User.SteemId;
+      return this.$store.state.Profile.steem.name;
     }
   },
   data() {
@@ -41,10 +41,20 @@ export default {
     // fetch blog entries
     fetchBlog(steemId) {
       const that = this;
-      that.$root.SteemApiQry("getDiscussionsByBlog", {tag: steemId, limit: 10}, function(error, result) {
-        if (error === null) {
-          that.$store.commit("UpdUserContent", {cat: "Blogs", value: result});
-          that.$store.commit("UpdDataObj", { cat: "Loading", value: false });
+      this.steem.api.getDiscussionsByBlog({tag: steemId, limit: 10}, (err, result) => {
+        if (err === null) {
+          that.$store.commit("UpdDataObj", {cat: "Blogs", value: result});
+        }
+        else {
+          createToast(
+            err,
+            {
+              showIcon: true,
+              position: "bottom-right",
+              type: "bad",
+              transition: "slide"
+            }
+          );
         }
       });
     },
@@ -52,11 +62,19 @@ export default {
   mounted() {
     const steemId = this.$route.params.id;
     if (typeof steemId !== "undefined") {
-      if (steemId !== this.User.SteemId) {
-        this.$root.SrcAccount(steemId);
+      if (steemId !== this.SteemId) {
+        const that = this;
+        that.steem.api.getAccounts([steemId], function(err, result) {
+          if (err === null) {
+            that.$store.commit("UpdProf", {cat: "steem", value: result[0]});
+          }
+        });
       }
       this.fetchBlog(steemId);
     }
+  },
+  props: {
+    steem: {type: Object}
   }
 }
 </script>
