@@ -7,7 +7,7 @@
             <transition name="slide-fade">
               <!-- Header Navigation Menu Icons -->
               <button class="header-button" key="on" v-if="show" @click="show = !show">
-                <font-awesome-icon class="a-fw header-icon" icon="times-circle" />
+                <font-awesome-icon class="fa-fw header-icon" icon="times-circle" />
               </button>
               <button class="header-button" key="off" v-else @click="show = !show">
                 <font-awesome-icon class="fa-fw header-icon" icon="th" />
@@ -18,25 +18,32 @@
           <transition name="dropdown">
             <div class="dropdownmenu" v-bind:class="{ active: show }" v-if="show">
               <ul class="">
-                <li class="">
+                <li>
+                  <router-link class="dropdownmenu-link" :title="$t('dashboard')" :to="{name: 'Dashboard'}">
+                    <font-awesome-icon icon="tachometer-alt" />
+                    <span class="dropdownmenu-text">{{$t("dashboard")}}</span>
+                  </router-link>
+                </li>
+                <hr>
+                <li>
                   <router-link class="dropdownmenu-link" :title="$t('account')" :to="{name: 'Account', params: {id: User}}">
                     <font-awesome-icon icon="user-circle" />
                     <span class="dropdownmenu-text">{{$t("account")}}</span>
                   </router-link>
                 </li>
-                <li class="dropdownmenu-item">
+                <li>
                   <router-link class="dropdownmenu-link" :title="$t('blog')" :to ="{name: 'BlogList', params: {id: User}}">
                     <font-awesome-icon icon="book-open" />
                     <div class="dropdownmenu-text">{{$t("blog")}}</div>
                   </router-link>
                 </li>
-                <li class="">
+                <li>
                   <router-link class="dropdownmenu-link" :title="$t('follower')" :to ="{name: 'Followers', params: {id: User}}">
                     <font-awesome-icon icon="user-friends"></font-awesome-icon>
                     <div class="dropdownmenu-text">{{$t("follower")}}</div>
                   </router-link>
                 </li>
-                <li class="">
+                <li>
                   <router-link class="dropdownmenu-link" :title="$t('following')" :to ="{name: 'Following', params: {id: User}}">
                     <font-awesome-icon icon="user-plus" />
                     <div class="dropdownmenu-text">{{$t("following")}}</div>
@@ -44,7 +51,7 @@
                 </li>
                 <!-- Dropdown Menu Separator -->
                 <hr>
-                <li class="">
+                <li>
                   <router-link class="dropdownmenu-link" :title="$t('wallet')" :to ="{name: 'Wallet', params: {id: User}}">
                     <font-awesome-icon icon="wallet"></font-awesome-icon>
                     <div class="dropdownmenu-text">{{$t("wallet")}}</div>
@@ -90,7 +97,7 @@ export default {
   background-color: white;
   border: 1px solid #dadce0;
   border-radius: 12px;
-  height: 25rem;
+  height: 30rem;
   min-width: 250px;
   margin-top: 1rem;
   overflow-y: auto;
