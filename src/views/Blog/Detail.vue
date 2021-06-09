@@ -2,7 +2,7 @@
   <div v-if="Lang">
     <div class="card" v-if="blog">
       <div class="card-content">
-        <h3 class="has-text-weight-bold is-size-5 is-marg-bottom-7">
+        <h3 class="has-text-weight-bold is-size-5 mb-1">
           {{blog.title}}
         </h3>
         <div class="card blog-author">
@@ -10,7 +10,7 @@
             <div class="media">
               <div class="media-left">
                 <figure>
-                  
+
                 </figure>
               </div>
               <div class="media-content">
@@ -23,7 +23,7 @@
           </div>
         </div>
         <!-- Post Content -->
-        <div v-html="Converter.makeHtml(blog.body)"></div>
+        <div v-html="blog.body"></div>
         <!-- Tags -->
         <hr />
         <div v-if="isLiker">
@@ -82,10 +82,9 @@
 </template>
 
 <script>
-import {CalcReputation} from "@/Func/SteemFunc.js";
-import MngLikers from "@/Func/Likers.js";
-import Replies from "@/views/Blog/Replies";
-import showdown from "showdown";
+import { CalcReputation } from "@/utils/steem/action.js";
+import { isLikers } from "@/utils/likers.js";
+import Replies from "./Replies";
 
 export default {
   name: "BlogDetail",
@@ -111,7 +110,7 @@ export default {
         return false;
       }
       else {
-        return (this.MngLikers.isLiker(this.blog.author, this.Likers)) ? true : false;
+        return (isLikers(this.blog.author, this.Likers)) ? true : false;
       }
     },
     Lang() {
@@ -156,8 +155,6 @@ export default {
   data() {
     return {
       blog: false,
-      Converter: new showdown.Converter(),
-      MngLikers: new MngLikers(),
       replies: false,
       ShowVotes: false
     }
@@ -170,7 +167,7 @@ export default {
     },
     GetBlog(steemId, permlink) {
       const that = this;
-      that.$root.Steem.Library.api.getContent(steemId, permlink, (error, result) => {
+      that.steem.api.getContent(steemId, permlink, (error, result) => {
         if (result) {
           this.blog = result;
         }
@@ -179,7 +176,7 @@ export default {
     // get blog's replies
     GetReplies(steemId, permlink) {
       const that = this;
-      that.$root.Steem.Library.api.getContentReplies(steemId, permlink, (error, result) => {
+      that.steem.api.getContentReplies(steemId, permlink, (error, result) => {
         if (result) {
           this.replies = result;
         }
@@ -217,13 +214,14 @@ export default {
     if (typeof steemId !== "undefined" && typeof title !== "undefined") {
       this.Init(steemId, title);
     }
+  },
+  props: {
+    steem: {type: Object}
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/main.scss";
-
 .blog-author {
   -webkit-box-shadow: none;
 	-moz-box-shadow: none;

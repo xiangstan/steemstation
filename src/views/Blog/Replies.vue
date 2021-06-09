@@ -4,7 +4,7 @@
       {{cmt.author}} ({{Reputation}}) &#9830; {{CvtTime(cmt.last_update)}}
     </p>
     <div class="panel-block is-pad-5">
-      <div class="content" v-html="Converter.makeHtml(cmt.body)"></div>
+      <div class="content" v-html="cmt.body"></div>
     </div>
     <p class="panel-block has-background-white-bis">
       <span class="icon-section">
@@ -18,16 +18,16 @@
       </span>
       <span>${{cmt.pending_payout_value.split(" ")[0]}}</span>
       <span class="liker-hand" v-if="isLiker(cmt.author)">
-        <img src="@/assets/images/clap.png" />
+        <img src="/img/clap.png" />
       </span>
     </p>
   </div>
 </template>
 
 <script>
-import {CalcReputation} from "@/Func/SteemFunc.js";
-import MngLikers from "@/Func/Likers.js";
-import showdown from "showdown";
+import { cvtTime } from "@/utils/date";
+import { CalcReputation } from "@/utils/steem/action.js";
+import { isLikers } from "@/utils/likers.js";
 
 export default {
   name: "Replies",
@@ -42,20 +42,14 @@ export default {
       else { return 0; }
     },
   },
-  data() {
-    return {
-      Converter: new showdown.Converter(),
-      MngLikers: new MngLikers()
-    }
-  },
   methods: {
     // call $root.CvtTime(time)
     CvtTime(time) {
-      return this.$root.CvtTime(time);
+      return cvtTime(time);
     },
     // check if the selected steemid is a likeCoin registered account
     isLiker(steemId) {
-      return (this.MngLikers.isLiker(steemId, this.Likers)) ? true : false;
+      return (isLikers(steemId, this.Likers)) ? true : false;
     },
     Vote() {}
   },
