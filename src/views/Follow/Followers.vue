@@ -1,21 +1,21 @@
 <template>
-  <div class="container has-text-left" v-if="Followers">
+  <div class="container has-text-left">
     <p class="is-italic" v-if="Followers.length < 1">
-      {{Lang.follow.nothing_to + Lang.steem.load}}
+      {{$t("nothing_to") + $t(" ") + $t("load")}}
     </p>
     <div class="message">
       <div class="message-header">
-        {{Lang.follow.follower}}
+        {{$t("follower")}}
       </div>
       <div class="message-body">
         <p class="follow-item" v-for="(user, idx) in Followers" :key="idx">
           <strong>{{user.follower}}</strong>
           <span class="is-pulled-right">
-            <router-link class="follow-icon" :title="Lang.steem.wallet" :to ="{name: 'Wallet', params: {id: user.follower}}">
-              <font-awesome-icon icon="wallet"></font-awesome-icon>
+            <router-link class="follow-icon" :title="$t('wallet')" :to ="{name: 'Wallet', params: {id: user.follower}}">
+              <font-awesome-icon icon="wallet" />
             </router-link>
-            <router-link class="follow-icon" :title="Lang.steem.blog" :to ="{name: 'BlogList', params: {id: user.follower}}">
-              <font-awesome-icon icon="book-open"></font-awesome-icon>
+            <router-link class="follow-icon" :title="$t('blog')" :to ="{name: 'BlogList', params: {id: user.follower}}">
+              <font-awesome-icon icon="book-open" />
             </router-link>
           </span>
         </p>
@@ -27,47 +27,47 @@
 <script>
 module.exports={
   computed: {
-    Followers: function() { return this.$store.state.Follow.Followers; },
-    Lang: function() { return this.$store.state.Lang; },
-    Steem() {
-      return this.$store.state.Steem;
+    Followers() {
+      return this.$store.state.Follow.Followers;
     },
-    SteemId: function() { return this.$store.state.SteemId; },
+    SteemId() {
+      return this.$store.state.SteemId;
+    },
     User() {
-      return this.$store.state.User.SteemId;
+      return this.$store.state.Profile.steem.name;
     }
   },
   methods: {
     GetFollow(steemId) {
       const that = this;
-      window.setTimeout(function() {
-        that.Steem.Library.api.getFollowers(steemId, 0, "blog", 1000, (err, result) => {
-          if (err) {
-            that.$store.commit("UpdFollow", [
-              { "follower": '<p class="notification is-danger">Error: '+ err +'</p>' }
-            ]);
-          }
-          else{
-            that.$store.commit("UpdFollow", { cat: "Followers", value: result });
-          }
-          that.$store.commit("UpdDataObj", { cat: "Loading", value: false });
-        });
-      }, 100);
+      that.steem.api.getFollowers(steemId, 0, "blog", 1000, (err, result) => {
+        if (err) {
+          that.$store.commit("UpdFollow", [
+            { "follower": '<p class="notification is-danger">Error: '+ err +'</p>' }
+          ]);
+        }
+        else {
+          that.$store.commit("UpdFollow", { cat: "Followers", value: result });
+        }
+      });
     },
-    // initial data pull
-    Init(steemId) {
-      this.$store.commit("UpdDataObj", { cat: "Loading", value: true });
-      this.GetFollow(steemId);
-    }
   },
   mounted() {
     const steemId = this.$route.params.id;
     if (typeof steemId !== "undefined") {
-      if (steemId !== this.User.SteemId) {
-        this.$root.SrcAccount(steemId);
+      if (steemId !== this.SteemId) {
+        const that = this;
+        that.steem.api.getAccounts([steemId], function(err, result) {
+          if (err === null) {
+            that.$store.commit("UpdProf", {cat: "steem", value: result[0]});
+          }
+        });
       }
-      this.Init(steemId);
+      this.GetFollow(steemId);
     }
+  },
+  props: {
+    steem: {type: Object}
   }
 };
 </script>

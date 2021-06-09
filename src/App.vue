@@ -6,6 +6,7 @@
         <div class="columns">
           <div class="column is-one-quarter">
             <SteemProfile :steem="steem" ref="steemprof" />
+            <NearProfile ref="nearprof" />
           </div>
           <div class="column">
             <router-view v-slot="{ Component }">
@@ -36,16 +37,20 @@ import Footer from "@/components/static/Footer";
 import Home from "@/views/public/Home";
 import Login from "@/views/public/Login";
 import Menu from "@/components/static/Menu";
-import SteemProfile from "@/views/user/SteemProfile";
 import Navigation from "@/components/static/Navigation";
+import NearProfile from "@/views/user/NearProfile";
 import steem from "steem";
+import SteemProfile from "@/views/user/SteemProfile";
 import "mosha-vue-toastify/dist/style.css";
 
 export default {
   name: "App",
   computed: {
+    NearId() {
+      return this.$near.user.accountId
+    },
     SteemId() {
-      return this.$store.state.SteemId;
+      return this.$store.state.SteemId
     }
   },
   components: {
@@ -54,6 +59,7 @@ export default {
     Login,
     Menu,
     Navigation,
+    NearProfile,
     SteemProfile
   },
   data() {

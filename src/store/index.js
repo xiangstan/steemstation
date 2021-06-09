@@ -1,10 +1,16 @@
 import { createStore } from "vuex";
+import Blogs from "./module/blogs";
 import Chain from "./module/chain";
 import Profile from "./module/profile";
 import Show from "./module/show";
 
 export default createStore({
   state: {
+    Follow: {
+      Followers: [],
+      Following: false
+    },
+    Liker: [],
     SteemId: ""
   },
   mutations: {
@@ -15,6 +21,10 @@ export default createStore({
     // generic update function
     UpdDataObj(state, data) {
       state[data.cat] = data.value;
+    },
+    // update folowers/following
+    UpdFollow(state, data) {
+      state.Follow[data.cat] = data.value;
     },
     // update profile
     UpdProf(state, data) {
@@ -28,6 +38,7 @@ export default createStore({
   actions: {
   },
   modules: {
+    Blogs,
     Chain,
     Profile,
     Show
