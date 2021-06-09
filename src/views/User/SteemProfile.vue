@@ -70,7 +70,7 @@
                 (<em>{{CommaSeparated(ChainPower.own)}} {{delegatedpower}}</em>)
               </template>
               <template v-else>
-                <font-awesome-icon aria-hidden="true" class="fas fa-spin" icon=" fa-spinner" /> Loading...
+                <font-awesome-icon aria-hidden="true" class="fas fa-spin" icon="spinner" /> Loading...
               </template>
             </p>
             <p>

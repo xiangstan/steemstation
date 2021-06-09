@@ -1,19 +1,19 @@
 <template>
-  <div v-if="Lang && CheckProfile">
+  <div v-if="CheckProfile">
     <!-- STEEM Info -->
     <div class="message">
-      <div class="message-header">
-        {{Lang.steem.steem + Lang.steem.space + Lang.steem.wallet}}
+      <div class="message-header is-capitalized">
+        STEEM{{$t(" ") + $t("wallet")}}
       </div>
       <div class="message-body">
         <div class="content">
-          <p><strong>{{Lang.steem[page.toLowerCase()]}}:</strong> {{Profile.balance}}</p>
+          <p><strong>STEEM:</strong> {{Profile.balance}}</p>
           <!-- <p><strong>Steem Power:</strong> {{profile.balance}}</p> -->
-          <p><strong>{{Lang.steem[page.toLowerCase()]}} Dollars:</strong> {{Profile.sbd_balance}}</p>
-          <p><strong>{{Lang.profile.savings}}:</strong> {{Profile.savings_balance}}</p>
+          <p><strong>STEEM Dollars:</strong> {{Profile.sbd_balance}}</p>
+          <p><strong>{{$t("savings")}}:</strong> {{Profile.savings_balance}}</p>
           <div class="line-break"></div>
           <p v-if="ChainMedianPrice">
-            <strong>{{Lang.profile.steem_price}}:</strong> ${{ChainMedianPrice}}
+            <strong>{{$t("steem_price")}}:</strong> ${{ChainMedianPrice}}
           </p>
           <p v-if="ChainRecentClaim">
             <strong>Recent Claims:</strong> {{CommaSeparated(ChainRecentClaim / 1e9)}} B
@@ -21,32 +21,20 @@
         </div>
       </div>
     </div>
-    <!-- Tokens -->
-    <Tokens></Tokens>
-    <!-- Unclaimed -->
-    <Unclaimed></Unclaimed>
-    <!-- <button class="button" @click="Test">Test</button> -->
     <!-- End -->
   </div>
 </template>
 
 <script>
-import Tokens from "@/components/Wallet/Tokens";
-import Unclaimed from "@/components/Wallet/Unclaimed";
-
 export default {
-  components: {
-    Tokens,
-    Unclaimed
-  },
   computed: {
     /* dynamic global properties */
     ChainGlobalProps() {
-      return this.$store.state.Chain[this.page].GlobalProps;
+      return this.$store.state.Chain.steem.GlobalProps;
     },
     /* dynmanic median price */
     ChainMedianPrice() {
-      let temp = this.$store.state.Chain[this.page].CurMHisPrice;
+      let temp = this.$store.state.Chain.steem.CurMHisPrice;
       if (temp) {
         return parseFloat(temp.base.split(" ")[0]) / parseFloat(temp.quote.split(" ")[0]);
       }
@@ -59,7 +47,7 @@ export default {
     },
     /* steem reward fund */
     ChainRewardFund() {
-      return this.$store.state.Chain[this.page].RewardFund;
+      return this.$store.state.Chain.steem.RewardFund;
     },
     // check if profile object is empty
     CheckProfile() {
@@ -68,14 +56,16 @@ export default {
     Lang() {
       return this.$store.state.Lang;
     },
-    Profile() { return this.$store.state.User.Profile; },
+    Profile() { return this.$store.state.Profile.steem; },
     // SteemJs library
     Steem() {
       return this.$store.state.Steem;
     },
-    TokenExpands: function() { return this.$store.state.Expands; },
+    TokenExpands() {
+      return this.$store.state.Show;
+    },
     User() {
-      return this.$store.state.User.SteemId;
+      return this.$store.state.Profile.steem.name;
     }
   },
   methods: {
@@ -95,15 +85,18 @@ export default {
   mounted() {
     const steemId = this.$route.params.id;
     if (typeof steemId !== "undefined") {
-      if (steemId !== this.User.SteemId) {
-        this.$root.SrcAccount(steemId);
-        this.$store.commit("UpdExpand", {cat: "token", value: false});
-        this.$store.commit("UpdExpand", {cat: "unclaimed", value: false});
+      if (steemId !== this.SteemId) {
+        const that = this;
+        that.steem.api.getAccounts([steemId], function(err, result) {
+          if (err === null) {
+            that.$store.commit("UpdProf", {cat: "steem", value: result[0]});
+          }
+        });
       }
     }
   },
-  props:{
-    page: {type: String, default: "Steem"},
+  props: {
+    steem: {type: Object}
   }
 };
 </script>
