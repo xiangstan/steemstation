@@ -1,66 +1,13 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from "vuex";
+import Chain from "./module/chain";
+import Profile from "./module/profile";
+import Show from "./module/show";
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+export default createStore({
   state: {
-    Chain: {
-      Steem: {
-        CurMHisPrice: false,
-        GlobalProps: false,
-        RewardFund: false
-      }
-    },
-    Expands: {
-      blog: false,
-      likers: false,
-      login: false,
-      profile: false,
-      sms: false,
-      token: false,
-      unclaimed: false
-    },
-    Follow: {
-      Followers: false,
-      Following: false
-    },
-    Lang: false,
-    Liker: [],
-    Loading: false,
-    Msg: {
-      alert: false,
-      code: false,
-      text: ""
-    },
-    Profile: {},
-    Steem: {
-      Library: false,
-      Option: "https://api.steemit.com"
-    },
-    SteemId: false,
-    Toast: [
-    ],
-    User: {
-      Blogs: false,
-      Profile: {},
-      SteemId: "",
-      Tokens: []
-    }
+    SteemId: ""
   },
   mutations: {
-    // add liker id
-    AddLiker(state, data) {
-      state.Liker.push(data);
-    },
-    // remove existing item from toasts
-    PopToast(state, idx) {
-      state.Toast = state.Toast.filter(t => t.id !== idx);
-    },
-    // push new item in toast
-    PushToast(state, data) {
-      state.Toast.push(data);
-    },
     // update chain global properties
     UpdChainProp(state, data) {
       state.Chain[data.chain][data.obj] = data.value;
@@ -69,25 +16,20 @@ export default new Vuex.Store({
     UpdDataObj(state, data) {
       state[data.cat] = data.value;
     },
-    // update expand sections
-    UpdExpand(state, data) {
-      state.Expands[data.cat] = data.value;
+    // update profile
+    UpdProf(state, data) {
+      state.Profile[data.cat] = data.value;
     },
-    // update folowers/following
-    UpdFollow(state, data) {
-      state.Follow[data.cat] = data.value;
+    // update show sections
+    UpdShow(state, data) {
+      state.Show[data.cat] = data.value;
     },
-    // update steemjs library
-    UpdSteemJs(state, data) {
-      state.Steem[data.cat] = data.value;
-    },
-    // update user textContent
-    UpdUserContent(state, data) {
-      state.User[data.cat] = data.value;
-    }
   },
   actions: {
   },
   modules: {
+    Chain,
+    Profile,
+    Show
   }
 })
