@@ -11,20 +11,20 @@
           <span aria-hidden="true"></span>
         </a>
       </div>
-      <div id="navbarBasicExample" class="navbar-menu" v-if="Lang">
+      <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
           <div class="navbar-item" v-if="SteemId">
             <p class="control has-icons-left">
               <input class="input" type="text" v-model="srcData" @keyup.enter="Search" />
               <span class="icon is-small is-left">
-                <font-awesome-icon icon="search"></font-awesome-icon>
+                <font-awesome-icon icon="search" />
               </span>
             </p>
           </div>
           <div class="navbar-item">
             <template v-if="SteemId">
               <router-link class="navbar-item" to="/editor">
-                <font-awesome-icon icon="edit"></font-awesome-icon>
+                <font-awesome-icon icon="edit" />
               </router-link>
               <div class="navbar-item" v-if="ProfileImg">
                 <img class="navbar-image" :src="ProfileImg" />
@@ -32,7 +32,7 @@
             </template>
             <div class="buttons" v-if="!SteemId">
               <a class="button is-light" @click="Login">
-                {{Lang.steem.login}}
+                {{$t("login")}}
               </a>
             </div>
           </div>
@@ -44,31 +44,12 @@
 </template>
 
 <script>
-import Language from "@/components/Language";
+import Language from "./Language";
 
 export default {
   name: 'Navigation',
   components: {
     Language
-  },
-  computed: {
-    Lang() {
-      return this.$store.state.Lang;
-    },
-    SteemId() {
-      return this.$store.state.SteemId;
-    },
-    ProfileImg() {
-      if (typeof this.$store.state.Profile !== "undefined") {
-        const json = this.$store.state.Profile.json_metadata;
-        if (typeof json !== "undefined") {
-          const temp = JSON.parse(json);
-          return temp.profile.profile_image;
-        }
-        else { return false; }
-      }
-      return false;
-    }
   },
   data () {
     return {

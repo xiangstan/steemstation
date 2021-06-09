@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-item has-dropdown is-hoverable">
       <a class="navbar-link is-arrowless">
-        <font-awesome-icon class="is-size-3" icon="language"></font-awesome-icon>
+        <font-awesome-icon class="is-size-3" icon="language" />
       </a>
       <div class="navbar-dropdown is-right">
         <a class="navbar-item">
@@ -15,20 +15,19 @@
 </template>
 
 <script>
-import axios from "axios";
+//import { getLang } from "@/utils/language";
 
 export default {
   methods: {
     Select(e) {
       const lang = e.currentTarget.dataset.lang;
-      this.Show = false;
-      this.$root.GetLang(lang);
+      localStorage.setItem("lang", lang);
+      this.$i18n.locale = lang;
     }
   },
   mounted() {
+    const lang = localStorage.getItem("lang");
+    this.$i18n.locale = lang;
   }
 };
 </script>
-
-<style scoped>
-</style>
