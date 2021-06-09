@@ -5,7 +5,7 @@
       <div class="container has-text-left pt-5">
         <div class="columns">
           <div class="column is-one-quarter">
-            <SteemProfile :steem="steem" />
+            <SteemProfile :steem="steem" ref="steemprof" />
           </div>
           <div class="column">
             <router-view v-slot="{ Component }">
@@ -23,7 +23,7 @@
       <Menu :steem="steem" ref="menu" />
     </div>
     <div v-else>
-      <Home />
+      <router-view :steem="steem" />
       <Login v-if="$store.state.Show.login" ref="login" />
     </div>
     <Footer />
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { createToast } from "mosha-vue-toastify";
 import Footer from "@/components/static/Footer";
 import Home from "@/views/public/Home";
 import Login from "@/views/public/Login";
@@ -38,6 +39,7 @@ import Menu from "@/components/static/Menu";
 import SteemProfile from "@/views/user/SteemProfile";
 import Navigation from "@/components/static/Navigation";
 import steem from "steem";
+import "mosha-vue-toastify/dist/style.css";
 
 export default {
   name: "App",
@@ -69,6 +71,20 @@ export default {
             that.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
             that.$store.commit("UpdProf", {cat: "steem", value: result[0]});
             that.$store.commit("UpdShow", {cat: "login", value: false});
+            if (that.$route.path === "/") {
+              that.$router.push("/dashboard")
+            }
+          }
+          else {
+            createToast(
+              err,
+              {
+                showIcon: true,
+                position: "bottom-right",
+                type: "bad",
+                transition: "slide"
+              }
+            );
           }
         });
       }

@@ -25,6 +25,4 @@ const app = createApp(App);
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(store).use(i18n).use(router);
 
-app.config.devtools = true
-
 app.mount("#app");

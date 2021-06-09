@@ -36,11 +36,11 @@
                 <p class="is-size-5 has-text-weight-bold is-capitalized">
                   {{$t("node") + $t(" ") + $t("status")}}
                 </p>
-                <p v-if="load.ChainProperties === '0'">
+                <p v-if="load.ChainProperties === 0">
                   <font-awesome-icon class="fas fa-spin" icon="spinner" />
                   {{$t("loading")}}
                 </p>
-                <p class="notification is-danger" v-else-if="load.ChainProperties==='-1'">
+                <p class="notification is-danger" v-else-if="load.ChainProperties === -1">
                   Error loading data
                 </p>
                 <template v-else>
@@ -61,9 +61,12 @@
       </div>
     </section>
 
-    <!--<section class="section witness">
-      <Witness />
-    </section>-->
+    <section class="about">
+    </section>
+
+    <section class="section witness">
+      <Witness :steem="steem" />
+    </section>
 
     <section class="section links">
       <div class="container">
@@ -120,7 +123,7 @@ import { createToast } from "mosha-vue-toastify";
 import { hasKeychain } from "@/utils/steem/keychain";
 import "mosha-vue-toastify/dist/style.css";
 import Status from "@/components/steem/Status";
-//import Witness from "@/components/steem/Witness";
+import Witness from "@/components/steem/Witness";
 
 const message = {
   "cn": {
@@ -137,7 +140,7 @@ export default {
   name: "Home",
   components: {
     Status,
-    //Witness
+    Witness
   },
   computed: {
     Message() {
@@ -148,7 +151,7 @@ export default {
     return {
       ChainProperties: false,
       load: {
-        ChainProperties: "0",
+        ChainProperties: 0,
       },
       Tiles: "status",
       Witness: false
@@ -173,27 +176,28 @@ export default {
       }
     },
     // load STEEM Gobal Properties
-    GetChainProperties: function() {
+    GetChainProperties() {
       const that = this;
-      that.$root.SteemApiNoQry("getChainProperties", (err, result) => {
+      that.steem.api.getChainProperties((err, result) => {
         if (result) {
-          console.log(result);
           that.ChainProperties = result;
-          that.load.ChainProperties = "1";
+          that.load.ChainProperties = 1;
         }
         else {
-          that.loadChainProperties = "-1";
+          that.loadChainProperties = -1;
         }
       });
     },
     SetTile(e) {
       const tile = e.currentTarget.dataset.tile;
       this.Tiles = tile;
-      console.log(tile);
     }
   },
   mounted() {
-    //this.GetChainProperties();
+    this.GetChainProperties();
+  },
+  props: {
+    steem: {type: Object}
   }
 }
 </script>
