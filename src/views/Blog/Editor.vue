@@ -1,31 +1,31 @@
 <template>
-  <div v-if="Lang">
+  <div>
     <template v-if="LoggedIn">
       <div class="field">
-        <label class="label is-size-5">{{Lang.post.title}}</label>
+        <label class="label is-size-5">{{$t("title")}}</label>
         <div class="control">
           <input class="input" type="text" v-model="form.title" />
         </div>
       </div>
       <div class="field">
-        <label class="label is-size-5">{{Lang.post.content}}</label>
+        <label class="label is-size-5">{{$t("content")}}</label>
         <div class="control">
           <vue-simplemde v-model="form.content" ref="markdownEditor" />
         </div>
       </div>
       <div class="field">
-        <label class="label is-size-5">{{Lang.post.tag}}</label>
+        <label class="label is-size-5">{{$t("tag")}}</label>
         <div class="control">
           <input class="input" type="text" v-model="form.tag" />
         </div>
       </div>
       <div class="field">
-        <label class="label is-size-5">{{Lang.post.reward}}</label>
+        <label class="label is-size-5">{{$t("reward")}}</label>
         <div class="control">
           <div class="select is-fullwidth">
             <select v-model="form.reward">
               <option value="0">
-                {{Lang.post.decline}}
+                {{$t("decline")}}
               </option>
               <option value="50">
                 50% SBD / 50% SP
@@ -38,12 +38,11 @@
         </div>
       </div>
       <div class="field">
-        <button class="button" @click="Submit">{{Lang.post.post}}</button>
+        <button class="button" @click="Submit">{{$t("posting")}}</button>
       </div>
     </template>
     <p class="notification is-danger" v-else>
-      <template v-if="Lang.index==='cn'">请先登陆，再撰写文章。</template>
-      <template v-else>Please log in first before write your post.</template>
+      {{$t("need_login")}}
     </p>
   </div>
 </template>
@@ -60,9 +59,6 @@ export default {
     // check if steem_keychain extension is installed
     HasKeychain() {
       return (window.steem_keychain) ? true : false;
-    },
-    Lang() {
-      return this.$store.state.Lang;
     },
     // logged in Account
     LoggedIn() {

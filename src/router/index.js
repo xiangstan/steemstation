@@ -1,87 +1,60 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-
-Vue.use(VueRouter)
+import { createRouter, createWebHistory } from "vue-router";
+import Home from "@/views/public/Home";
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    meta: {
-      title: "SteemStation"
-    }
+    path: "/",
+    name: "Home",
+    component: Home
   },
   {
-    path: '/@:id',
-    name: 'Account',
+    path: "/@:id",
+    name: "Account",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "account" */ '../views/Account.vue'),
-    meta: {
-      title: "Account"
-    }
-  },
-  {
-    path: '/@:id/blog',
-    name: 'BlogList',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "BlogList" */ '../views/Blog/List.vue'),
-    meta: {
-      title: "Blog List"
-    }
+    component: () => import(/* webpackChunkName: "account" */ "@/views/Account")
   },
   {
     path: "/@:id/blog/:title",
     name: "BlogDetail",
-    component: () => import(/* webpackChunkName: "BlogList" */ '../views/Blog/Detail.vue')
+    component: () => import(/* webpackChunkName: "BlogDetail" */ "@/views/blog/Detail")
   },
   {
-    path: '/chain',
-    name: 'Chain',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "chain" */ '../views/Chain.vue')
+    path: "/@:id/blog",
+    name: "BlogList",
+    component: () => import(/* webpackChunkName: "BlogList" */ "@/views/blog/List")
   },
   {
-    path: '/@:id/following',
-    name: 'Following',
-    component: () => import(/* webpackChunkName: "following" */ '../views/Follow/Following.vue')
+    path: "/@:id/following",
+    name: "Following",
+    component: () => import(/* webpackChunkName: "following" */ "@/views/follow/Following")
   },
   {
-    path: '/@:id/followers',
-    name: 'Followers',
-    component: () => import(/* webpackChunkName: "followers" */ '../views/Follow/Followers.vue')
+    path: "/@:id/followers",
+    name: "Followers",
+    component: () => import(/* webpackChunkName: "followers" */ "@/views/follow/Followers")
   },
   {
-    path: '/@:id/wallet',
-    name: 'Wallet',
-    component: () => import(/* webpackChunkName: "wallet" */ '../views/User/Wallet.vue')
+    path: "/@:id/wallet",
+    name: "Wallet",
+    component: () => import(/* webpackChunkName: "wallet" */ "@/views/user/Wallet")
   },
   {
-    path: '/editor',
-    name: 'Editor',
-    component: () => import(/* webpackChunkName: "editor" */ '../views/User/Editor.vue')
+    path: "/dashboard",
+    name: "Dashboard",
+    component: () => import (/* webpackChunkName: "dashboard" */ "@/views/user/Dashboard")
   },
   {
-    path: '/tag/:tag',
-    name: 'Tag',
-    component: () => import(/* webpackChunkName: "editor" */ '../views/Blog/Tag.vue')
+    path: "/editor",
+    name: "Editor",
+    component: () => import(/* webpackChunkName: "editor" */ "@/views/blog/Editor")
   },
 ]
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes
-})
-
-router.beforeEach((to, from, next) => {
-  document.title = to.meta.title
-  next()
 })
 
 export default router
