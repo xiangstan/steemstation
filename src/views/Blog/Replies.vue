@@ -4,7 +4,7 @@
       {{cmt.author}} ({{Reputation}}) &#9830; {{CvtTime(cmt.last_update)}}
     </p>
     <div class="panel-block is-pad-5">
-      <div class="content" v-html="cmt.body"></div>
+      <div class="content" v-html="Convert(cmt.body)"></div>
     </div>
     <p class="panel-block has-background-white-bis">
       <span class="icon-section">
@@ -28,6 +28,8 @@
 import { cvtTime } from "@/utils/date";
 import { CalcReputation } from "@/utils/steem/action.js";
 import { isLikers } from "@/utils/likers.js";
+import showdown from "showdown";
+const convert = new showdown.Converter();
 
 export default {
   name: "Replies",
@@ -43,6 +45,10 @@ export default {
     },
   },
   methods: {
+    // convert markdown to readable text
+    Convert(data) {
+      return convert.makeHtml(data)
+    },
     // call $root.CvtTime(time)
     CvtTime(time) {
       return cvtTime(time);

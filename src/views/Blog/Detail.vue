@@ -1,5 +1,5 @@
 <template>
-  <div v-if="Lang">
+  <div>
     <div class="card" v-if="blog">
       <div class="card-content">
         <h3 class="has-text-weight-bold is-size-5 mb-1">
@@ -23,34 +23,34 @@
           </div>
         </div>
         <!-- Post Content -->
-        <div v-html="blog.body"></div>
+        <div class="content" v-html="Converter(blog.body)"></div>
         <!-- Tags -->
         <hr />
         <div v-if="isLiker">
           <iframe :src="'https://button.like.co/in/embed/' + GetLikerId + '/button?referrer=' + BlogUrl" frameborder="0" allowfullscreen="" scrolling="no"></iframe>
         </div>
-        <p class="is-pad-tp-5">
+        <p class="pt-3">
           <a class="blog-tag-link" v-for="(tag, idx) in metadata.tags" :key="idx">
             <span class="blog-tag" v-if="tag.length > 0">
               {{tag}}
             </span>
           </a>
         </p>
-        <p class="is-pad-tp-5">
+        <p class="pt-3">
           <span class="icon-section">
             <a data-vote="10000" @click="Vote">
-              <font-awesome-icon class="vote-icon vote-icon-up" icon="chevron-circle-up"></font-awesome-icon>
+              <font-awesome-icon class="vote-icon vote-icon-up" icon="chevron-circle-up" />
             </a> &nbsp;
             <a data-vote="-10000" @click="Vote">
-              <font-awesome-icon class="vote-icon vote-icon-down" icon="chevron-circle-down"></font-awesome-icon>
+              <font-awesome-icon class="vote-icon vote-icon-down" icon="chevron-circle-down" />
             </a> &nbsp;
             <a class="has-text-dark" @click="ShowVotes = !ShowVotes">{{blog.active_votes.length}}</a>
           </span>
-          <span class="is-marg-hr-7">
-            <font-awesome-icon icon="comment-alt"></font-awesome-icon> {{blog.children}}
+          <span class="mx-1">
+            <font-awesome-icon icon="comment-alt" /> {{blog.children}}
           </span>
-          <a class="has-text-dark is-marg-hr-7">
-            <font-awesome-icon icon="retweet"></font-awesome-icon>
+          <a class="has-text-dark mx-1">
+            <font-awesome-icon icon="retweet" />
           </a>
           <span class="is-pulled-right">${{blog.pending_payout_value.split(" ")[0]}}</span>
         </p>
@@ -85,6 +85,8 @@
 import { CalcReputation } from "@/utils/steem/action.js";
 import { isLikers } from "@/utils/likers.js";
 import Replies from "./Replies";
+import showdown from "showdown";
+const convert = new showdown.Converter();
 
 export default {
   name: "BlogDetail",
@@ -113,9 +115,6 @@ export default {
         return (isLikers(this.blog.author, this.Likers)) ? true : false;
       }
     },
-    Lang() {
-      return this.$store.state.Lang;
-    },
     Likers() {
       return this.$store.state.Liker;
     },
@@ -140,7 +139,7 @@ export default {
       else { return 0; }
     },
     User() {
-      return this.$store.state.User.SteemId;
+      return this.$store.state.Profile.steem.name;
     },
     UserMetaData() {
       if (this.UserProfile) {
@@ -165,6 +164,10 @@ export default {
       this.GetBlog(steemId, permlink);
       this.GetReplies(steemId, permlink);
     },
+    // convert plain mardown to readable text
+    Converter(data) {
+      return convert.makeHtml(data)
+    },
     GetBlog(steemId, permlink) {
       const that = this;
       that.steem.api.getContent(steemId, permlink, (error, result) => {
@@ -183,7 +186,7 @@ export default {
       });
     },
     LikerId() {
-      const profile = this.$store.state.User.Profile;
+      const profile = this.$store.state.Profile.steem;
       const metadata = JSON.parse(profile.json_metadata)
       const location = metadata.profile.location;
       const loc = location.split(":");
