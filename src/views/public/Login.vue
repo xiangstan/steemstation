@@ -4,9 +4,9 @@
     <div class="modal-card has-text-left">
       <header class="modal-card-head">
         <p class="modal-card-title has-text-weight-bold is-uppercase">
-          {{Lang.steem.login}}
+          {{$t("login")}}
           <a class="has-text-dark has-text-weight-normal">
-            <font-awesome-icon class="is-pulled-right" icon="times-circle" @click="Close"></font-awesome-icon>
+            <font-awesome-icon class="is-pulled-right" icon="times-circle" @click="Close" />
           </a>
         </p>
       </header>
@@ -14,7 +14,7 @@
         <div class="field">
           <label class="label is-sr-only">Email address</label>
           <div class="control">
-            <input class="input" placeholder="Email Address or Account Name" type="text" v-model="form.account" />
+            <input class="input" placeholder="Account Name" type="text" v-model="form.account" />
           </div>
         </div>
         <p class="notification is-danger" v-if="errmsg.length > 0">
@@ -37,12 +37,15 @@
 </template>
 
 <script>
+import { createToast } from "mosha-vue-toastify";
+import "mosha-vue-toastify/dist/style.css";
+import steem from "steem";
+
 export default {
   name: "Login",
   computed: {
-    HasKeychain() { return (window.steem_keychain) ? true : false; },
-    Lang() {
-      return this.$store.state.Lang;
+    HasKeychain() {
+      return (window.steem_keychain) ? true : false;
     }
   },
   data() {
@@ -54,7 +57,7 @@ export default {
   methods: {
     // close log in window
     Close() {
-      this.$store.commit("UpdExpand", {cat: "login", value: false});
+      this.$store.commit("UpdShow", {cat: "login", value: false});
     },
     // log into the app
     Login(e) {
@@ -67,13 +70,14 @@ export default {
       else{
         account = this.Sanitize(account);
         if (this.HasKeychain) {
+          const that = this;
           account = account.trim();
           //window.steem_keychain.requestVerifyKey(account.trim(), Date.now(), "Posting", (r) => {
-          window.steem_keychain.requestSignBuffer(account, account+Date.now(), "Posting", (r) => {
+          window.steem_keychain.requestSignBuffer(account, account + Date.now(), "Posting", (r) => {
             if (r.success) {
               localStorage.setItem("steemId", account);
-              this.$store.commit("UpdDataObj", {cat: "SteemId", value: account});
-              this.$root.SrcAccount(account, "login");
+              that.$store.commit("UpdDataObj", {cat: "SteemId", value: account});
+              that.SearchSteemAccount(account);
             }
           });
         }
@@ -82,23 +86,39 @@ export default {
         }
       }
     },
-    LoginPass(steemId, callback) {
-      let key = this.form.password;
-      if (key && key.startsWith("STM")) {
-        if (callback)
-            callback({
-                success: false,
-                error: "This appears to be a public key. You must use your private posting key to log in."
-            });
-        return
-      }
-      if (key && !this.Steem.auth.isWif(steemId)) {
-        key = this.Steem.auth.getPrivateKeys(steemId, key, ["posting"]).posting
-        console.log(key)
-      }
-    },
     Sanitize(steemId) {
       return steemId.toLowerCase().trim();
+    },
+    // search Account
+    SearchSteemAccount(account) {
+      if (account === "") {
+        createToast(
+          "Need a STEEM ID",
+          {
+            showIcon: true,
+            position: "bottom-right",
+            type: "warning",
+            transition: "slide"
+          }
+        );
+      }
+      else {
+        steem.api.getAccounts([account], function(err, result) {
+          if (err === null) {
+            console.log(result[0]);
+            localStorage.setItem("steemId", account);
+            this.$store.commit("UpdProf", {cat: "steem", value: result[0]});
+            this.$store.commit("UpdShow", {cat: "login", value: false});
+          }
+          else {
+            this.$store.commit("UpdDataObj", {cat: "Msg", value: {
+              alert: true,
+              code: false,
+              text: err
+            }});
+          }
+        });
+      }
     }
   },
   props: {

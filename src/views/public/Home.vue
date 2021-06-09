@@ -1,28 +1,18 @@
 <template>
-  <div class="has-text-left" v-if="Lang">
+  <div class="has-text-left">
     <section class="parallax has-text-left">
       <div class="container parallax-container">
         <div class="parallax-title">
           <h3 class="has-text-primary is-capitalized">
-            <template v-if="Lang.index === 'cn'">
-              加入STEEM
-            </template>
-            <template v-else>
-              GET STARTED WITH STEEM
-            </template>
+            {{Message["title"]}}
           </h3>
           <h2 class="is-size-2">STEEM STATION</h2>
           <h4 class="is-size-3">
-            <template v-if="Lang.index === 'cn'">
-              一扇进入密码流的社交媒体网络的始点
-            </template>
-            <template v-else>
-              An Entry point for the cryptocurrent based Social Media Network
-            </template>
+            {{Message["sub"]}}
           </h4>
         </div>
-        <a class="button-parallax is-size-4" @click="BtnLogin">
-          {{Lang.steem.login}}
+        <a class="button-parallax is-capitalized is-size-4" @click="BtnLogin">
+          {{$t("login")}}
         </a>
       </div>
     </section>
@@ -31,24 +21,24 @@
       <div class="container">
         <div class="tile is-ancestor">
           <div class="tile box is-parent is-horizontal">
-            <div class="tile is-child is-2 is-pad-top-5">
+            <div class="tile is-child is-2 pt-2">
               <nav class="panel datanav">
-                <a class="panel-block is-fullwidth" data-tile="status" @click="SetTile">
-                  {{Lang.steem.node + Lang.steem.space + Lang.steem.status}}
+                <a class="panel-block is-capitalized" data-tile="status" @click="SetTile">
+                  {{$t("node") + $t(" ") + $t("status")}}
                 </a>
-                <a class="panel-block" data-tile="properties" @click="SetTile">
-                  {{Lang.steem.chain + Lang.steem.space + Lang.steem.properties}}
+                <a class="panel-block is-capitalized" data-tile="properties" @click="SetTile">
+                  {{$t("chain") + $t(" ") + $t("properties")}}
                 </a>
               </nav>
             </div>
-            <div class="tile is-child is-10 has-text-left is-pad-5">
+            <div class="tile is-child is-10 has-text-left px-4 py-2">
               <div v-if="Tiles === 'status'">
-                <p class="is-size-5 has-text-weight-bold">
-                  {{Lang.steem.node + Lang.steem.space + Lang.steem.status}}
+                <p class="is-size-5 has-text-weight-bold is-capitalized">
+                  {{$t("node") + $t(" ") + $t("status")}}
                 </p>
                 <p v-if="load.ChainProperties === '0'">
-                  <i aria-hidden="true" class="fas fa-spinner fa-spin"></i>
-                  {{Lang.steem.load + Lang.steem.ing}}
+                  <font-awesome-icon class="fas fa-spin" icon="spinner" />
+                  {{$t("loading")}}
                 </p>
                 <p class="notification is-danger" v-else-if="load.ChainProperties==='-1'">
                   Error loading data
@@ -61,9 +51,9 @@
               </div>
               <div v-else-if="Tiles === 'properties'">
                 <p class="is-size-5 has-text-weight-bold">
-                  {{Lang.steem.chain + Lang.steem.space + Lang.steem.properties}}
+                  {{$t("chain") + $t(" ") + $t("properties")}}
                 </p>
-                <Status></Status>
+                <Status />
               </div>
             </div>
           </div>
@@ -71,12 +61,9 @@
       </div>
     </section>
 
-    <section class="about">
-    </section>
-
-    <section class="section witness">
-      <Witness></Witness>
-    </section>
+    <!--<section class="section witness">
+      <Witness />
+    </section>-->
 
     <section class="section links">
       <div class="container">
@@ -89,7 +76,7 @@
       </div>
     </section>
 
-    <section class="section contact">
+    <!--<section class="section contact">
       <div class="container">
         <div class="columns">
           <div class="column">
@@ -123,25 +110,39 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
   </div>
 </template>
 
 <script>
-import Status from "@/components/Chain/Status";
-import Witness from "@/components/Public/Witness";
+import { createToast } from "mosha-vue-toastify";
+import { hasKeychain } from "@/utils/steem/keychain";
+import "mosha-vue-toastify/dist/style.css";
+import Status from "@/components/steem/Status";
+//import Witness from "@/components/steem/Witness";
+
+const message = {
+  "cn": {
+    sub: "一扇进入密码流的社交媒体网络的始点",
+    title: "加入STEEM"
+  },
+  "en": {
+    sub: "An Entry point for the cryptocurrent based Social Media Network",
+    title: "GET STARTED WITH STEEM"
+  }
+}
 
 export default {
-  name: "Index",
+  name: "Home",
   components: {
     Status,
-    Witness
+    //Witness
   },
   computed: {
-    Lang() {
-      return this.$store.state.Lang;
-    },
+    Message() {
+      return message[this.$i18n.locale]
+    }
   },
   data() {
     return {
@@ -156,7 +157,20 @@ export default {
   methods: {
     // open login modal
     BtnLogin() {
-      this.$store.commit("UpdExpand", {cat: "login", value: true});
+      if (hasKeychain()) {
+        this.$store.commit("UpdShow", {cat: "login", value: true});
+      }
+      else {
+        createToast(
+          "Please install the STEEM Keychain extension first.",
+          {
+            showIcon: true,
+            position: "bottom-right",
+            type: "warning",
+            transition: "slide"
+          }
+        );
+      }
     },
     // load STEEM Gobal Properties
     GetChainProperties: function() {
@@ -179,13 +193,13 @@ export default {
     }
   },
   mounted() {
-    this.GetChainProperties();
+    //this.GetChainProperties();
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss/main.scss";
+@import "@/assets/styles/colors.scss";
 
 section {
   min-height: 1px;
@@ -221,7 +235,7 @@ section.links, section.contact {
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("/images/blockchain.jpg");
+  background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("/img/blockchain.jpg");
   color: white;
 }
 .parallax-container {

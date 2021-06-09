@@ -44,12 +44,31 @@
 </template>
 
 <script>
+import { createToast } from "mosha-vue-toastify";
+import { hasKeychain } from "@/utils/steem/keychain";
 import Language from "./Language";
+import "mosha-vue-toastify/dist/style.css";
 
 export default {
   name: 'Navigation',
   components: {
     Language
+  },
+  computed: {
+    ProfileImg() {
+      if (typeof this.$store.state.Profile.steem !== "undefined") {
+        const json = this.$store.state.Profile.steem.json_metadata;
+        if (typeof json !== "undefined") {
+          const temp = JSON.parse(json);
+          return temp.profile.profile_image;
+        }
+        else { return false; }
+      }
+      return false;
+    },
+    SteemId() {
+      return this.$store.state.SteemId;
+    }
   },
   data () {
     return {
@@ -60,7 +79,20 @@ export default {
   methods: {
     // open login modal
     Login() {
-      this.$store.commit("UpdExpand", {cat: "login", value: true});
+      if (hasKeychain()) {
+        this.$store.commit("UpdShow", {cat: "login", value: true});
+      }
+      else {
+        createToast(
+          "Please install the STEEM Keychain extension first.",
+          {
+            showIcon: true,
+            position: "bottom-right",
+            type: "warning",
+            transition: "slide"
+          }
+        );
+      }
     },
     // search bar
     Search() {

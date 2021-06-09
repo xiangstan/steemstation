@@ -1,5 +1,5 @@
 <template>
-  <header class="header" v-if="Lang">
+  <header class="header">
     <nav class="is-relative">
       <ul class="header-navbar">
         <li class="header-item">
@@ -7,10 +7,10 @@
             <transition name="slide-fade">
               <!-- Header Navigation Menu Icons -->
               <button class="header-button" key="on" v-if="show" @click="show = !show">
-                <font-awesome-icon class="a-fw header-icon" icon="times-circle"></font-awesome-icon>
+                <font-awesome-icon class="a-fw header-icon" icon="times-circle" />
               </button>
               <button class="header-button" key="off" v-else @click="show = !show">
-                <font-awesome-icon class="fa-fw header-icon" icon="th"></font-awesome-icon>
+                <font-awesome-icon class="fa-fw header-icon" icon="th" />
               </button>
             </transition>
           </a>
@@ -19,35 +19,35 @@
             <div class="dropdownmenu" v-bind:class="{ active: show }" v-if="show">
               <ul class="">
                 <li class="">
-                  <router-link class="dropdownmenu-link" :title="Lang.steem.account" :to="{name: 'Account', params: {id: User}}">
-                    <font-awesome-icon icon="user-circle"></font-awesome-icon>
-                    <span class="dropdownmenu-text">{{Lang.steem.account}}</span>
+                  <router-link class="dropdownmenu-link" :title="$t('account')" :to="{name: 'Account', params: {id: User}}">
+                    <font-awesome-icon icon="user-circle" />
+                    <span class="dropdownmenu-text">{{$t("account")}}</span>
                   </router-link>
                 </li>
                 <li class="dropdownmenu-item">
-                  <router-link class="dropdownmenu-link" :title="Lang.steem.blog" :to ="{name: 'BlogList', params: {id: User}}">
-                    <font-awesome-icon icon="book-open"></font-awesome-icon>
-                    <div class="dropdownmenu-text">{{Lang.steem.blog}}</div>
+                  <router-link class="dropdownmenu-link" :title="$t('blog')" :to ="{name: 'BlogList', params: {id: User}}">
+                    <font-awesome-icon icon="book-open" />
+                    <div class="dropdownmenu-text">{{$t("blog")}}</div>
                   </router-link>
                 </li>
                 <li class="">
-                  <router-link class="dropdownmenu-link" :title="Lang.follow.follower" :to ="{name: 'Followers', params: {id: User}}">
+                  <router-link class="dropdownmenu-link" :title="$t('follower')" :to ="{name: 'Followers', params: {id: User}}">
                     <font-awesome-icon icon="user-friends"></font-awesome-icon>
-                    <div class="dropdownmenu-text">{{Lang.follow.follower}}</div>
+                    <div class="dropdownmenu-text">{{$t("follower")}}</div>
                   </router-link>
                 </li>
                 <li class="">
-                  <router-link class="dropdownmenu-link" :title="Lang.follow.following" :to ="{name: 'Following', params: {id: User}}">
-                    <font-awesome-icon icon="user-plus"></font-awesome-icon>
-                    <div class="dropdownmenu-text">{{Lang.follow.following}}</div>
+                  <router-link class="dropdownmenu-link" :title="$t('following')" :to ="{name: 'Following', params: {id: User}}">
+                    <font-awesome-icon icon="user-plus" />
+                    <div class="dropdownmenu-text">{{$t("following")}}</div>
                   </router-link>
                 </li>
                 <!-- Dropdown Menu Separator -->
                 <hr>
                 <li class="">
-                  <router-link class="dropdownmenu-link" :title="Lang.steem.wallet" :to ="{name: 'Wallet', params: {id: User}}">
+                  <router-link class="dropdownmenu-link" :title="$t('wallet')" :to ="{name: 'Wallet', params: {id: User}}">
                     <font-awesome-icon icon="wallet"></font-awesome-icon>
-                    <div class="dropdownmenu-text">{{Lang.steem.wallet}}</div>
+                    <div class="dropdownmenu-text">{{$t("wallet")}}</div>
                   </router-link>
                 </li>
               </ul>
@@ -63,11 +63,8 @@
 export default {
   name: "Menu",
   computed: {
-    Lang() {
-      return this.$store.state.Lang;
-    },
     User() {
-      return this.$store.state.User.SteemId;
+      return this.$store.state.SteemId;
     }
   },
   data() {

@@ -14,12 +14,13 @@
                 enter-active-class="animate__animated animate__fadeIn animate__faster"
                 leave-active-class="animate__animated animate__fadeOut animate__faster"
               >
-                <component :is="Component" />
+                <component :is="Component" :steem="steem" />
               </transition>
             </router-view>
           </div>
         </div>
       </div>
+      <Menu :steem="steem" ref="menu" />
     </div>
     <div v-else>
       <Home />
@@ -33,6 +34,7 @@
 import Footer from "@/components/static/Footer";
 import Home from "@/views/public/Home";
 import Login from "@/views/public/Login";
+import Menu from "@/components/static/Menu";
 import SteemProfile from "@/views/user/SteemProfile";
 import Navigation from "@/components/static/Navigation";
 import steem from "steem";
@@ -48,6 +50,7 @@ export default {
     Footer,
     Home,
     Login,
+    Menu,
     Navigation,
     SteemProfile
   },
@@ -66,9 +69,11 @@ export default {
             that.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
             that.$store.commit("UpdProf", {cat: "steem", value: result[0]});
             that.$store.commit("UpdShow", {cat: "login", value: false});
-            that.$router.push({path: "/dashboard"});
           }
         });
+      }
+      else {
+        this.$router.push({path: "/"});
       }
       this.SteemGetRewardFund();
       this.SteemGlobalProperties();
