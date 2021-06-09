@@ -1,7 +1,12 @@
 {
   "name": "steem-near-vue",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
+  "author": {
+    "name": "Xiang Tan",
+    "email": "xtan@uccs.edu",
+    "url": "https://xiangstan.github.io"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -70,6 +75,10 @@
         }
       }
     ]
+  },
+  "engines": {
+    "node": ">= 14.16.0",
+    "yarn": ">= 1.22.5"
   },
   "browserslist": [
     "> 1%",
