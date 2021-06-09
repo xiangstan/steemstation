@@ -1,120 +1,127 @@
 <template>
-  <div v-if="Lang && CheckProfile">
-    <!-- User Info -->
-    <div class="card">
-      <div class="card-content">
-        <div class="media">
-          <div class="media-left">
-            <figure class="image is-96x96">
-              <img class="profile-image" :src="metadata.profile_image" :alt="Profile.name" />
-            </figure>
-          </div>
-          <div class="media-content">
-            <p class="title is-4">
-              {{metadata.name}}
-              <span class="likr" v-if="likr">
-                <img src="@/assets/images/clap.png" />
-              </span>
-            </p>
-            <p class="subtitle is-6 is-italic">@{{Profile.name}}</p>
-            <p class="" v-if="metadata.location">
-              <font-awesome-icon class="icon-space" icon="map-marker-alt"></font-awesome-icon>
-              {{metadata.location}}
-            </p>
-          </div>
-        </div>
-        <div class="content">
-          <p>{{metadata.about}}</p>
-          <div class="is-6 field">
-            <div class="social-media">
-              <span class="icon-website" v-if="metadata.website">
-                <font-awesome-icon class="icon-space" :icon="['fab', 'chrome']"></font-awesome-icon>
-                <a class="social-link" :href="metadata.website" target="_blank">{{metadata.website}}</a>
-              </span>
-              <span class="icon-linkedin" v-if="metadata.linkedin">
-                <i class="fab fa-linkedin fa-fw"></i>
-                <a class="social-link" :href="'https://www.linkedin.com/in/'+metadata.linkedin" target="_blank">{{metadata.linkedin}}</a>
-              </span>
-              <span class="icon-facebook" v-if="metadata.facebook">
-                <i class="fas fa-map-marker-alt"></i> {{metadata.facebook}}
-              </span>
-              <span class="" v-if="metadata.youtube">
-                <i class="fab fa-youtube fa-fw"></i> {{metadata.youtube}}
-              </span>
-              <span class="" v-if="metadata.instagram">
-                <i class="fab fa-instagram fa-fw"></i> {{metadata.instagram}}
-              </span>
-              <span class="icon-github" v-if="metadata.github">
-                <i class="fab fa-github fa-fw"></i>
-                <a class="social-link" :href="'https://github.com/'+metadata.github" target="_blank">{{metadata.github}}</a>
-              </span>
+  <div>
+    <div v-if="CheckProfile">
+      <!-- User Info -->
+      <div class="card">
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-96x96">
+                <img class="profile-image" :src="metadata.profile_image" :alt="Profile.name" />
+              </figure>
+            </div>
+            <div class="media-content">
+              <p class="title is-4">
+                {{metadata.name}}
+                <span class="likr" v-if="likr">
+                  <img src="/img/clap.png" />
+                </span>
+              </p>
+              <p class="subtitle is-6 is-italic">@{{Profile.name}}</p>
+              <p v-if="metadata.location">
+                <font-awesome-icon class="icon-space" icon="map-marker-alt" />
+                {{metadata.location}}
+              </p>
             </div>
           </div>
-          <p>
-            <font-awesome-icon class="icon-space" icon="clock"></font-awesome-icon>
-            {{Lang.steem.joined}}:
-            {{AccountCreated}}
-          </p>
+          <div class="content">
+            <p>{{metadata.about}}</p>
+            <div class="is-6 field">
+              <div class="social-media">
+                <span class="icon-website" v-if="metadata.website">
+                  <font-awesome-icon class="icon-space" :icon="['fab', 'chrome']" />
+                  <a class="social-link" :href="metadata.website" target="_blank">{{metadata.website}}</a>
+                </span>
+                <span class="icon-linkedin" v-if="metadata.linkedin">
+                  <font-awesome-icon class="fa-fw" :icon="['fab', 'fa-linkedin']" />
+                  <a class="social-link" :href="'https://www.linkedin.com/in/' + metadata.linkedin" target="_blank">{{metadata.linkedin}}</a>
+                </span>
+                <span class="icon-facebook" v-if="metadata.facebook">
+                  <font-awesome-icon class="icon-space" icon="map-marker-alt" /> {{metadata.facebook}}
+                </span>
+                <span v-if="metadata.youtube">
+                  <i class="fab fa-youtube fa-fw"></i> {{metadata.youtube}}
+                </span>
+                <span v-if="metadata.instagram">
+                  <font-awesome-icon class="fa-fw" :icon="['fab', 'fa-instagram']" /> {{metadata.instagram}}
+                </span>
+                <span class="icon-github" v-if="metadata.github">
+                  <font-awesome-icon class="fa-fw" :icon="['fab', 'fa-github']" />
+                  <a class="social-link" :href="'https://github.com/' + metadata.github" target="_blank">{{metadata.github}}</a>
+                </span>
+              </div>
+            </div>
+            <p>
+              <font-awesome-icon class="icon-space" icon="clock" />
+              {{$t("joined")}}:
+              {{AccountCreated}}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- STEEM Info -->
-    <div class="card">
-      <div class="card-content">
-        <div class="content">
-          <p v-if="ChainGlobalProps">
-            <strong>{{Lang.profile.steem_power}}:</strong>
-            <template v-if="ChainGlobalProps && ChainPower">
-              {{CommaSeparated(CalcChainPower.toFixed(2))}}
-              (<em>{{CommaSeparated(ChainPower.own)}} {{delegatedpower}}</em>)
-            </template>
-            <template v-else>
-              <i aria-hidden="true" class="fas fa-spinner fa-spin"></i> Loading...
-            </template>
-          </p>
-          <p>
-            <strong>{{Lang.profile.voting + Lang.steem.space +Lang.profile.power}}:</strong> {{ChainVotePower}}%
-          </p>
-          <p>
-            <strong>{{Lang.profile.downvote + Lang.steem.space +Lang.profile.power}}:</strong> {{ChainDownPower}}%
-          </p>
-          <!-- <p>
-            <strong>Upvote:</strong> ${{upvote}}
-          </p> -->
+      <!-- STEEM Info -->
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <p v-if="ChainGlobalProps">
+              <strong>{{$t("steem_power")}}: </strong>
+              <template v-if="ChainGlobalProps && ChainPower">
+                {{CommaSeparated(CalcChainPower.toFixed(2))}}
+                (<em>{{CommaSeparated(ChainPower.own)}} {{delegatedpower}}</em>)
+              </template>
+              <template v-else>
+                <font-awesome-icon aria-hidden="true" class="fas fa-spin" icon=" fa-spinner" /> Loading...
+              </template>
+            </p>
+            <p>
+              <strong>{{$t("voting") + $t(" ") + $t("power")}}:</strong> {{ChainVotePower}}%
+            </p>
+            <p>
+              <strong>{{$t("downvote") + $t(" ") + $t("power")}}:</strong> {{ChainDownPower}}%
+            </p>
+            <!-- <p>
+              <strong>Upvote:</strong> ${{upvote}}
+            </p> -->
+          </div>
         </div>
       </div>
+      <!-- End -->
     </div>
-    <!-- End -->
+    <p class="notification is-danger" v-else>
+      Provided account does not exist
+    </p>
   </div>
-  <p class="notification is-danger" v-else>Provided account does not exist</p>
 </template>
 
 <script>
+import { cvtTime } from "@/utils/date";
+
 export default {
+  name: "SteemProfile",
   computed: {
     // convert Profile.created to local time
     AccountCreated() {
-      return this.$root.CvtTime(this.Profile.created) || "";
+      return cvtTime(this.Profile.created) || "";
     },
     CalcChainPower() {
       return parseFloat(this.ChainPower.own) + this.CalcDelegated(this.ChainPower, true);
     },
     /* dynamic global properties */
     ChainGlobalProps() {
-      return this.$store.state.Chain[this.page].GlobalProps;
+      return this.$store.state.Chain.steem.GlobalProps;
     },
     /* steem user self steem power */
     ChainPower() {
       /* https://steemit.com/utopian-io/@stoodkev/steemjs-for-dummies-2-calculate-the-user-s-steem-power */
       if (this.ChainGlobalProps) {
         return {
-          own: parseFloat(this.Steem.Library.formatter.vestToSteem(this.Profile.vesting_shares, this.ChainGlobalProps.total_vesting_shares, this.ChainGlobalProps.total_vesting_fund_steem).toFixed(2)),
-          delegated: parseFloat(this.Steem.Library.formatter.vestToSteem(
+          own: parseFloat(this.steem.formatter.vestToSteem(this.Profile.vesting_shares, this.ChainGlobalProps.total_vesting_shares, this.ChainGlobalProps.total_vesting_fund_steem).toFixed(2)),
+          delegated: parseFloat(this.steem.formatter.vestToSteem(
             this.Profile.delegated_vesting_shares,
             this.ChainGlobalProps.total_vesting_shares,
             this.ChainGlobalProps.total_vesting_fund_steem
           ).toFixed(2)),
-          received: parseFloat(this.Steem.Library.formatter.vestToSteem(
+          received: parseFloat(this.steem.formatter.vestToSteem(
             this.Profile.received_vesting_shares,
             this.ChainGlobalProps.total_vesting_shares,
             this.ChainGlobalProps.total_vesting_fund_steem
@@ -137,7 +144,7 @@ export default {
     },
     /* steem reward fund */
     ChainRewardFund() {
-      return this.$store.state.Chain[this.page].RewardFund;
+      return this.$store.state.Chain.steem.RewardFund;
     },
     // check if profile object is empty
     CheckProfile() {
@@ -168,7 +175,7 @@ export default {
         return false;
       }
     },
-    Profile() { return this.$store.state.User.Profile; },
+    Profile() { return this.$store.state.Profile.steem; },
     /* check if to show vote power section box */
     ShowMoney() {
       const flag = {
@@ -178,10 +185,6 @@ export default {
       }
       return flag[this.page] || false;
     },
-    // SteemJs library
-    Steem() {
-      return this.$store.state.Steem;
-    }
   },
   methods: {
     CalcDelegated: function(value, status = false) {
@@ -200,8 +203,8 @@ export default {
       return parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   },
-  props:{
-    page: {type: String, default: "Steem"},
+  props: {
+    steem: {type: Object}
   }
 };
 </script>
@@ -210,10 +213,10 @@ export default {
 .card{
   margin-bottom:1.25rem;
 }
-.card .content{
+.card .content {
   overflow:hidden;
 }
-.profile-image{
+.profile-image {
   border-radius: 50%;
   border:5px solid #fff;
   box-shadow: 0px 0px 6px #444;
@@ -223,7 +226,7 @@ export default {
 .icon-space {
   margin-right: 3px;
 }
-.icon-facebook{
+.icon-facebook {
   color:#3b5998;
 }
 .icon-github {
