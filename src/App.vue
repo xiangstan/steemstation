@@ -2,135 +2,104 @@
   <div id="app">
     <Navigation />
     <div class="main-content" v-if="SteemId">
-      <div class="container has-text-left is-pad-top-5">
+      <div class="container has-text-left pt-5">
         <div class="columns">
           <div class="column is-one-quarter">
-            <Profile :show="Expands.profile" ref="profile"></Profile>
+            <SteemProfile :steem="steem" />
           </div>
           <div class="column">
-            <router-view />
+            <router-view v-slot="{ Component }">
+              <transition
+                mode="out-in"
+                enter-active-class="animate__animated animate__fadeIn animate__faster"
+                leave-active-class="animate__animated animate__fadeOut animate__faster"
+              >
+                <component :is="Component" />
+              </transition>
+            </router-view>
           </div>
         </div>
       </div>
     </div>
     <div v-else>
-      <Index></Index>
+      <Home />
+      <Login v-if="$store.state.Show.login" ref="login" />
     </div>
-    <Login v-if="Expands.login" ref="login" />
-    <Menu v-if="SteemId" ref="menu" />
-    <Toast />
-    <Loading />
-    <FooterBox></FooterBox>
+    <Footer />
   </div>
 </template>
 
 <script>
-import FooterBox from "@/components/Footer";
-import Index from "@/components/Index";
-import Loading from "@/components/Loading";
-import Login from "@/components/Login";
-import Menu from "@/components/Menu";
-import Profile from "@/components/Profile";
-import Navigation from "./components/Navigation";
-import Toast from "@/components/Toast/Main";
-var steem = require("steem");
+import Footer from "@/components/static/Footer";
+import Home from "@/views/public/Home";
+import Login from "@/views/public/Login";
+import SteemProfile from "@/views/user/SteemProfile";
+import Navigation from "@/components/static/Navigation";
+import steem from "steem";
 
 export default {
-  name: "SteemStation",
-  components: {
-    FooterBox,
-    Index,
-    Loading,
-    Login,
-    Menu,
-    Navigation,
-    Profile,
-    Toast
-  },
+  name: "App",
   computed: {
-    Msg() {
-      return this.$store.state.Msg;
-    },
-    Lang() {
-      return this.$store.state.Lang;
-    },
-    Steem() {
-      return this.$store.state.Steem;
-    },
     SteemId() {
       return this.$store.state.SteemId;
-    },
-    Expands() {
-      return this.$store.state.Expands;
     }
   },
-  created() {
-    this.Init();
+  components: {
+    Footer,
+    Home,
+    Login,
+    Navigation,
+    SteemProfile
   },
   data() {
     return {
+      steem: steem
     }
   },
   methods: {
-    /* Display alert message */
-    alert: function() {
-      const that = this;
-      window.setTimeout(() => {
-        this.$store.commit("UpdDataObj", {cat: "Msg", value: { alert: false }});
-      }, 4000);
-    },
     Init() {
-      this.$store.commit("UpdSteemJs", { cat: "Library", value: steem });
       const steemId = localStorage.getItem("steemId");
-      this.$root.SteemGlobalProperties("Steem");
-      window.setTimeout(() => {
-        this.$root.SteemCurMedHisPrice();
-        this.$root.SteemGetRewardFund();
-      }, 100);
       if (steemId) {
-        this.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
-        this.$root.SrcAccount(steemId, "login");
-        this.$root.GetLiker();
+        const that = this;
+        steem.api.getAccounts([steemId], function(err, result) {
+          if (err === null) {
+            that.$store.commit("UpdDataObj", {cat: "SteemId", value: steemId});
+            that.$store.commit("UpdProf", {cat: "steem", value: result[0]});
+            that.$store.commit("UpdShow", {cat: "login", value: false});
+            that.$router.push({path: "/dashboard"});
+          }
+        });
       }
-      this.$root.GetLang();
+      this.SteemGetRewardFund();
+      this.SteemGlobalProperties();
     },
+    /* get reward fund */
+    SteemGetRewardFund() {
+      const that = this;
+      steem.api.getRewardFund("post", (err, result) => {
+        if (err) { console.error(err); }
+        else {
+          that.$store.commit("UpdChainProp", {chain: "steem", obj: "RewardFund", value: result});
+        }
+      });
+    },
+    // get steem chain global properties
+    SteemGlobalProperties() {
+      steem.api.getDynamicGlobalProperties((err, result) => {
+        this.$store.commit("UpdChainProp", {chain: "steem", obj: "GlobalProps", value: result});
+      });
+    }
   },
   mounted() {
+    this.Init();
+  },
+  started() {
+    steem.api.setOptions({ url: 'https://api.steem.buzz' });
   }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-.background-token {
-  background-color: #4a4a4a;
-}
-.background-token.token-title {
-  padding: 0.75em 1em;
-}
-.button-expand {
-  color:#fff!important;
-  text-decoration: none!important;
-}
-.button-expand span {
-  color: #fff;
-  display: inline-block;
-  text-align: center;
-  width: 10px;
-}
-.is-marg-bottom-7 {
-  margin-bottom: $size7;
-}
-.is-pad-top-5 {
-  padding-top: $size5;
-}
-.main-content {
-  min-height: 80vh
-}
+@import "bulma";
+@import "@/assets/styles/main.scss";
 </style>

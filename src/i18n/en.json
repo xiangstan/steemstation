@@ -1,0 +1,17 @@
+{
+  " ": " ",
+  ".": ".",
+  "chain": "chain",
+  "downvote": "Downvote",
+  "joined": "Joined",
+  "loading": "loading",
+  "login": "log in",
+  "node": "node",
+  "ping": "Ping",
+  "power": "Power",
+  "properties": "properties",
+  "status": "status",
+  "steem_power": "STEEM Power",
+  "steem_price": "STEEM Price",
+  "voting": "Voting"
+}
