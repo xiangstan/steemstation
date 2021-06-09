@@ -72,18 +72,6 @@ module.exports={
 };
 </script>
 
-<style scoped>
-.follow-item {
-  border-bottom: none;
-  padding: 1.0rem 0.5rem;
-}
-.follow-item:hover {
-  background-color: #fff;
-}
-.follow-icon {
-  color: rgba(0, 0, 0, 0.6);
-}
-.follow-icon:not(:last-child) {
-  margin: 0 20px;
-}
+<style lang="scss" scoped>
+@import "@/assets/styles/follow.scss";
 </style>
