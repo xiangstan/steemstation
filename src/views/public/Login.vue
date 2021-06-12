@@ -78,6 +78,9 @@ export default {
               localStorage.setItem("steemId", account);
               that.$store.commit("UpdDataObj", {cat: "SteemId", value: account});
               that.SearchSteemAccount(account);
+              if (that.$route.path === "/") {
+                that.$router.push("/dashboard")
+              }
             }
           });
         }
@@ -106,7 +109,6 @@ export default {
         const that = this;
         steem.api.getAccounts([account], function(err, result) {
           if (err === null) {
-            console.log(result[0]);
             localStorage.setItem("steemId", account);
             that.$store.commit("UpdProf", {cat: "steem", value: result[0]});
             that.$store.commit("UpdShow", {cat: "login", value: false});

@@ -6,7 +6,7 @@
         <div class="columns">
           <div class="column is-one-quarter">
             <SteemProfile :steem="steem" ref="steemprof" />
-            <NearProfile ref="nearprof" />
+            <NearProfile ref="nearprof" v-if="typeof NearId !== 'undefined'" />
           </div>
           <div class="column">
             <router-view v-slot="{ Component }">

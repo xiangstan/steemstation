@@ -130,7 +130,6 @@ const message = {
     whatis: "STEEM STATION was started as a hobby work by <em>@lnakuma</em>, who has tried to learn STEEM Blockchain programming. And next thing you know, there is a whole web app."
   }
 }
-
 export default {
   name: "Home",
   components: {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="notification is-warning" v-if="typeof nearId !== 'undefined'">
+    <p class="notification is-warning" v-if="typeof nearId === 'undefined'">
       You are not connected to your Near Wallet, please
       <a class="is-warning" @click="Login">Login</a> your Near Account.
     </p>
@@ -22,6 +22,9 @@ export default {
     Login() {
       this.$near.loginAccount();
     }
+  },
+  mounted() {
+    console.log(this.$near.user.accountId)
   }
 }
 </script>

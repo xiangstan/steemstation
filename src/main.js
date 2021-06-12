@@ -13,11 +13,17 @@ library.add(faBookOpen, faChrome, faChevronCircleDown, faChevronCircleUp, faCloc
 dom.watch();
 
 // multilanguage
+let lang = localStorage.getItem("lang");
+if (!lang) {
+  localStorage.setItem("lang", "en");
+  lang = "en";
+}
+
 import { createI18n } from "vue-i18n";
 import { languages, defaultLocale } from "@/i18n/index.js"
 const messages = Object.assign(languages)
 const i18n = new createI18n({
-  locale: defaultLocale,
+  locale: lang || defaultLocale,
   messages
 });
 
