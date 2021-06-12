@@ -4,7 +4,7 @@
       <h3 class="has-text-weight-bold is-size-4">
         Near{{$t(" ") + $t("wallet")}}
         <a class="has-text-black" @click="Refresh">
-          <font-awesome-icon aria-hidden="true" class="fas" icon="sync" />
+          <font-awesome-icon aria-hidden="true" class="fas is-size-6" icon="sync" />
         </a>
       </h3>
       <p class="has-text-weight-semibold">

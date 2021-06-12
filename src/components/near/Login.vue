@@ -1,8 +1,8 @@
 <template>
   <div>
-    <p class="notification is-warning" v-if="nearId.length < 1">
-      You are not connected to your Near Wallet.
-      <a class="button is-info" @click="Login">Login Near</a>
+    <p class="notification is-warning" v-if="typeof nearId !== 'undefined'">
+      You are not connected to your Near Wallet, please
+      <a class="is-warning" @click="Login">Login</a> your Near Account.
     </p>
     <p class="notification is-success" v-else>
       You are connected to your Near Wallet <strong>{{nearId}}</strong>.

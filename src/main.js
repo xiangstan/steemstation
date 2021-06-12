@@ -25,9 +25,11 @@ const app = createApp(App);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(store).use(i18n).use(router);
+console.log(process.env.NODE_ENV);
 app.use(VueNear, {
   // Needs the environment for the correct RPC to use
-  env: process.env.NODE_ENV || 'development',
+  //env: process.env.NODE_ENV || 'development',
+  env: "development",
 })
 
 app.mount("#app");
