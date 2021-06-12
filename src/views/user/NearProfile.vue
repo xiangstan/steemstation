@@ -41,6 +41,7 @@ export default {
   },
   mounted() {
     this.$store.commit("UpdProf", {cat: "near", value: this.$near.user});
+    console.log(this.$near)
   }
 }
 </script>
