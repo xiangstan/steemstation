@@ -2,7 +2,7 @@
   <div>
     <div class="message">
       <div class="message-header">
-        {{$t("blog")}}
+        {{self + $t("blog")}}
       </div>
       <div class="message-body">
         <BriefEntry class="blog-entry is-relative" v-for="(blog, idx) in Blogs" :blog="blog" :user="User" :key="idx" />
@@ -24,6 +24,10 @@ export default {
   computed: {
     Blogs() {
       return this.$store.state.Blogs;
+    },
+    // check if blog is logged in user's own
+    self() {
+      return (this.SteemId === this.User) ? "" : this.User + this.$t("'s")
     },
     SteemId() {
       return this.$store.state.SteemId;
